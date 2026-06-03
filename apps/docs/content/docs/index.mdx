@@ -3,33 +3,30 @@ title: Introduction
 ---
 
 <blockquote
-  cite="https://ui.shadcn.com/docs"
+  cite="https://nativeblocks.dev"
   className="text-fd-muted-foreground -mt-2 font-normal">
-  This is not a component library. It is how you build your component library.
+  Mobile-first React Native components that feel native to iOS and Android.
 </blockquote>
 
 ## Bringing the shadcn/ui experience to React Native
 
-You can use the `shadcn` CLI to run your own component registry. Running your own
-component registry allows you to distribute your custom components, hooks, pages, and
-other files to any React project.
+Native Blocks is a component registry that provides production-ready, copy-paste React Native components and app blocks. 
+
+Unlike traditional component libraries, Native Blocks gives you full control over the code. You can use the Native Blocks CLI to add components directly into your project, where you can customize them to fit your specific needs.
+
+### Features
+
+- **Touch-First:** Components designed specifically for mobile interactions.
+- **Dynamic Styling:** Powered by NativeWind (Tailwind CSS for React Native).
+- **Smooth Animations:** Built with React Native Reanimated.
+- **Minimalistic:** Clean code following mobile standards.
+- **Copy & Paste:** No complex dependencies, just the code you need.
 
 <Callout type="warn">
-  This template uses NativeWind v4 and Tailwind v3. For Tailwind v4, you will need to update the
-  template once NativeWind v5 is stable and supports it
-  [link](https://www.nativewind.dev/blog/v5-migration-guide).
+  Native Blocks currently uses NativeWind v4. For Tailwind v4, we will update once NativeWind v5 is stable.
 </Callout>
-
-## Getting Started
-
-This is a template for creating a custom registry using Next.js or Expo.
-
-- The template uses a `registry.json` file to define components and their files. These are found in both `apps/docs` and `apps/showcase` folders.
-- The `shadcn build` command is used to build the registry.
-- You can use `turbo registry` to build the registry. This will generate the `public/r` folders in both `apps/docs` and `apps/showcase`.
-- The registry items are served as static files under `public/r/[name].json`.
-- Every registry item are compatible with the `shadcn` CLI.
 
 ## Documentation
 
-Visit the [shadcn documentation](https://ui.shadcn.com/docs/registry) to view the full documentation.
+Native Blocks is built on top of the excellent work by [React Native Reusables](https://reactnativereusables.com). 
+Our blocks and custom theme styling is designed to be compatible with the existing Reusables ecosystem.

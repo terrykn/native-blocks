@@ -1,7 +1,7 @@
 {
-  "title": "React Native Reusables",
-  "description": "",
-  "icon": "Building2",
+  "title": "Native Blocks",
+  "description": "Mobile-first React Native component registry.",
+  "icon": "Box",
   "root": true,
   "pages": [
     "---Getting started---",

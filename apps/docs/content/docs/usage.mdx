@@ -1,56 +1,36 @@
 ---
 title: Usage
-description: How to use the React Native Reusables Registry Template
+description: How to use Native Blocks
 ---
 
-## Using the template
+## Using Native Blocks
 
-- The example components are found in the `packages/library` folder.
-- The template includes the necessary config to use [react-native-reusables](https://reactnativereusables.com) components as dependencies.
+Native Blocks is designed to be as flexible as possible. Once you've added a component using the CLI, it's yours. You can find the source code in your project's `components/ui` or `components/blocks` folder.
 
-<Callout>
-  **Note:** The Reusables UI is installed in `packages/library/reusables`.
-  
-  If you want to use more `react-native-reusables` components as dependencies, you have to install them
-  through the [CLI](https://reactnativereusables.com/docs/cli) inside `packages/library`.
-</Callout>
+### Components vs Blocks
 
-## Building your own library
+- **Components:** Atomic UI elements like Buttons, Inputs, and Badges.
+- **Blocks:** More complex, pre-composed layouts like User Profiles, Settings Screens, and Account Setup flows.
 
-You can start by changing the `packages/library` folder name and replace all the references to it through the codebase.
+### Customization
 
-<Callout>
-  - All `package.json` files start with `@native-blocks/...` and you will need to update them with your own library name too.
-  - All the imports throughout the codebase use aliases defined in `tsconfig.json` files. You can search by `@/library` and replace it with the new name of the folder.
-</Callout>
+All Native Blocks components use NativeWind for styling. You can customize the look and feel by modifying the Tailwind classes in the component file.
 
-## References
+```tsx
+// Example customization
+<Button className="bg-blue-500 rounded-full">
+  <Text className="text-white font-bold">Custom Button</Text>
+</Button>
+```
 
-### Docs
+### Working with React Native Reusables
 
-- `apps/docs/mdx-components.tsx` to create custom components used in `.mdx` files
-- `apps/docs/components/examples.tsx` to update the components
-- `apps/docs/components/blocks.tsx` to update the blocks
-- `apps/docs/lib/file-generator.ts` to update the import paths in the code blocks
-- `apps/docs/registry.json` to update the registry
-- `apps/docs/tsconfig.json` to update the paths
-- `apps/docs/package.json` to install the package as a dependency
-- `apps/docs/next.config.mjs` to update the paths
+Native Blocks is built to extend [React Native Reusables](https://reactnativereusables.com). Our custom theme styling works globally with all React Native Reusables components. If a component you need isn't in Native Blocks, you can add it from Reusables using their CLI or ours:
 
-### Showcase app
+<BashCommand command={`npx native-blocks add <reusables-component>`} />
 
-- `apps/showcase/app/components/*` add your components here
-- `apps/showcase/lib/constants.ts` to add your components to the list
-- `apps/showcase/app.config.ts` to update the app config
-- `apps/showcase/content/docs/meta.json`
-- `apps/showcase/registry.json` for updating the registry
-- `apps/showcase/tsconfig.json` for updating the paths
-- `apps/showcase/package.json` to install the package as a dependency
+### Best Practices
 
-### Component Library
-
-- `packages/library/package.json` to update the package name
-- `packages/library/src/components/ui/*` to create your components
-- `packages/library/src/examples/*` to update the example components
-- `packages/library/src/blocks/*` to update the examples blocks
-
+- **Keep it Native:** Prioritize mobile-specific interactions and design patterns.
+- **Stay Minimal:** Only add the components you actually need to keep your project clean.
+- **Theme Support:** Native Blocks supports dark mode out of the box using NativeWind's color schemes.
