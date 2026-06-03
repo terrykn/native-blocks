@@ -9,8 +9,8 @@
     "build:web": "npx expo export -p web",
     "serve:web": "npx serve dist --single",
     "clean": "rm -rf .expo node_modules",
-    "postinstall": "npx tailwindcss -i ./global.css -o ./node_modules/.cache/nativewind/global.css",
-    "registry": "shadcn build --output ./public/r"
+    "postinstall": "node ../../node_modules/tailwindcss/lib/cli.js -i ./global.css -o ./node_modules/.cache/nativewind/global.css",
+    "registry": "node ../../node_modules/shadcn/dist/index.js build --output ./public/r"
   },
   "dependencies": {
     "@expo-google-fonts/geist": "^0.4.0",

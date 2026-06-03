@@ -7,7 +7,7 @@
     "clean": "rm -rf .next .source node_modules",
     "dev": "next dev",
     "start": "next start",
-    "registry": "shadcn build --output ./public/r",
+    "registry": "node ../../node_modules/shadcn/dist/index.js build --output ./public/r",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
