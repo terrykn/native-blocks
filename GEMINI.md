@@ -45,3 +45,9 @@ The goal is to provide production-ready, copy-paste React Native components and 
 - `packages/library/src/components/ui/*` to create your components
 - `packages/library/src/examples/*` to update the example components
 - `packages/library/src/blocks/*` to update the examples blocks
+
+### Commands
+- `pnpm install` to update any packages from package.json
+- `pnpm turbo build` to check the builds
+- `pnpm registry` to create the public/r files in docs and showcase
+- `cd packages/cli` and `npm publish --access public` to update the CLI
