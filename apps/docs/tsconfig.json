@@ -3,7 +3,11 @@
     "jsxImportSource": "nativewind",
     "baseUrl": ".",
     "target": "ESNext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,12 +18,18 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "paths": {
-      "@docs/*": ["./*"],
-      "~/*": ["../../packages/library/reusables/*"],
-      "@/library/*": ["../../packages/library/src/*"]
+      "@docs/*": [
+        "./*"
+      ],
+      "~/*": [
+        "../../packages/library/reusables/*"
+      ],
+      "@/library/*": [
+        "../../packages/library/src/*"
+      ]
     },
     "plugins": [
       {
@@ -34,7 +44,10 @@
     "global.d.ts",
     "nativewind-env.d.ts",
     "next-env.d.ts",
-    "dist/types/**/*.ts"
+    "dist/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

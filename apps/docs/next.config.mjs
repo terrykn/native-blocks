@@ -61,6 +61,7 @@ const withWebpack = {
       ...(config.resolve.alias || {}),
       'react-native': 'react-native-web',
       'react-native$': 'react-native-web',
+      'react-native/Libraries/Utilities/codegenNativeComponent': './lib/react-native-shim.js',
       'react-native/Libraries/EventEmitter/RCTDeviceEventEmitter$':
         'react-native-web/dist/vendor/react-native/NativeEventEmitter/RCTDeviceEventEmitter',
       'react-native/Libraries/vendor/emitter/EventEmitter$':
@@ -85,6 +86,7 @@ const withTurpopack = {
   turbopack: {
     resolveAlias: {
       'react-native': 'react-native-web',
+      'react-native/Libraries/Utilities/codegenNativeComponent': './lib/react-native-shim.js',
       'react-native/Libraries/EventEmitter/RCTDeviceEventEmitter$':
         'react-native-web/dist/vendor/react-native/NativeEventEmitter/RCTDeviceEventEmitter',
       'react-native/Libraries/vendor/emitter/EventEmitter$':
