@@ -20,7 +20,7 @@ The goal is to provide production-ready, copy-paste React Native components and 
 
 ### Docs
 
-- `apps/docs/mdx-components.tsx` to create custom components used in `.mdx` files
+- `apps/docs/mdx-components.tsx` to create custom components used in `.mdx` files (not required unless we need any new components to be used in .mdx)
 - `apps/docs/components/examples.tsx` to update the components
 - `apps/docs/components/blocks.tsx` to update the blocks
 - `apps/docs/lib/file-generator.ts` to update the import paths in the code blocks
