@@ -1,5 +1,6 @@
 import { RnrIcon } from '@docs/components/icons/rnr-icon';
 import { SkipNavigationButton } from '@docs/components/skip-navigation-button';
+import { ThemeCustomizerButton } from '@docs/components/theme-customizer-button';
 import { source } from '@docs/lib/source';
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
 import type { ReactNode } from 'react';
@@ -22,9 +23,16 @@ export default function Layout({ children }: { children: ReactNode }) {
             </div>
           ),
         }}
-        links={[]}
+        links={[
+          {
+            type: 'custom',
+            secondary: true,
+            children: <ThemeCustomizerButton />,
+          },
+        ]}
         sidebar={SIDEBAR_PROPS}
-        githubUrl="https://github.com/gabimoncha/rnr-registry-template">
+        // githubUrl="https://github.com/"
+      >
         {children}
       </DocsLayout>
     </>

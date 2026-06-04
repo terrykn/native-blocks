@@ -15,13 +15,14 @@ type ThemePreviewProps = React.PropsWithChildren<{
   radius?: number;
   borderWidth?: number;
   shadowOpacity?: number;
+  /** Overrides applied on top of the ACTIVE mode's palette. */
   colors?: Partial<ColorMap>;
 }>;
 
 /**
- * Scoped theming wrapper. Applies the customizer state (or explicit props)
- * as inline CSS variables, so only the previews inside this wrapper react to
- * theme changes — never the docs UI itself.
+ * Scoped theming wrapper. Applies the customizer state for the site's active
+ * color scheme (light/dark) as inline CSS variables, so only the previews
+ * inside this wrapper react to theme changes — never the docs UI itself.
  */
 export function ThemePreview({
   children,
@@ -31,16 +32,19 @@ export function ThemePreview({
   shadowOpacity,
   colors,
 }: ThemePreviewProps) {
-  const { theme } = useThemeConfig();
+  const { theme, mode } = useThemeConfig();
 
   const merged: ThemeState = {
     radius: radius ?? theme.radius,
     borderWidth: borderWidth ?? theme.borderWidth,
     shadowOpacity: shadowOpacity ?? theme.shadowOpacity,
-    colors: { ...theme.colors, ...(colors ?? {}) },
+    colors: {
+      ...theme.colors,
+      [mode]: { ...theme.colors[mode], ...(colors ?? {}) },
+    },
   };
 
-  const style = themeToCssVars(merged) as React.CSSProperties;
+  const style = themeToCssVars(merged, mode) as React.CSSProperties;
 
   return (
     <div style={style} className={cn('theme-preview w-full', className)}>

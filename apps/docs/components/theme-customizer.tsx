@@ -13,7 +13,7 @@ import {
   type HSL,
 } from '@docs/components/theme-provider';
 import { cn } from '@docs/lib/utils';
-import { Check, Clipboard, RotateCcw } from 'lucide-react';
+import { Check, Clipboard, Moon, RotateCcw, Sun } from 'lucide-react';
 import * as React from 'react';
 
 /* --------------------------------- primitives -------------------------------- */
@@ -110,7 +110,7 @@ function CopyButton({ label, getText, className }: CopyButtonProps) {
 
 /* ------------------------------ preview surface ------------------------------ */
 
-function PreviewSurface() {
+export function PreviewSurface() {
   return (
     <div className="bg-background text-foreground border-border rounded-lg border p-6 shadow-lg">
       <div className="flex flex-col gap-6">
@@ -119,7 +119,6 @@ function PreviewSurface() {
           <p className="text-muted-foreground text-sm">Deploy your new project in one click.</p>
         </div>
 
-        {/* input → border / input / ring / foreground */}
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium">Name</label>
           <input
@@ -128,7 +127,6 @@ function PreviewSurface() {
           />
         </div>
 
-        {/* buttons → primary / secondary / accent / destructive */}
         <div className="flex flex-wrap items-center gap-3">
           <button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-4 py-2 text-sm font-medium shadow transition-colors">
             Primary
@@ -144,7 +142,6 @@ function PreviewSurface() {
           </button>
         </div>
 
-        {/* card / popover / muted surfaces */}
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="bg-card text-card-foreground border-border rounded-md border p-3 shadow-sm">
             <p className="text-sm font-medium">Card</p>
@@ -160,7 +157,6 @@ function PreviewSurface() {
           Muted surface — also showing radius, border-width, and shadow.
         </div>
 
-        {/* charts */}
         <div>
           <p className="text-muted-foreground mb-2 text-xs font-medium">Charts</p>
           <div className="flex h-20 items-end gap-2">
@@ -180,9 +176,8 @@ function PreviewSurface() {
   );
 }
 
-/* --------------------------------- customizer -------------------------------- */
+/* ------------------------------- controls panel ------------------------------ */
 
-// Tokens grouped for the controls column.
 const BASE_TOKENS: ColorToken[] = [
   'background',
   'foreground',
@@ -206,117 +201,142 @@ const BASE_TOKENS: ColorToken[] = [
 ];
 const CHART_TOKENS: ColorToken[] = COLOR_TOKENS.filter((t) => t.startsWith('chart-'));
 
-export function ThemeCustomizer() {
-  const { theme, updateTheme, updateColor, deriveFromBase, reset } = useThemeConfig();
+/**
+ * The controls column on its own — reused by the full-page customizer
+ * and by the navbar popover button.
+ */
+export function ThemeCustomizerControls({ className }: { className?: string }) {
+  const { theme, mode, activeColors, updateTheme, updateColor, deriveFromBase, reset } =
+    useThemeConfig();
 
+  return (
+    <div className={cn('bg-fd-card rounded-lg border p-5', className)}>
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <h3 className="text-base font-semibold">Theme Customizer</h3>
+          <span className="bg-fd-secondary text-fd-secondary-foreground inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide">
+            {mode === 'dark' ? <Moon className="size-3" /> : <Sun className="size-3" />}
+            {mode}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={reset}
+          className="text-fd-muted-foreground hover:text-fd-foreground inline-flex items-center gap-1.5 text-sm transition-colors"
+          aria-label="Reset theme to defaults">
+          <RotateCcw className="size-3.5" />
+          Reset
+        </button>
+      </div>
+
+      <p className="text-fd-muted-foreground mb-2 text-xs">
+        You are editing the <span className="font-semibold">{mode}</span> palette. Toggle the
+        site&apos;s color scheme to edit the other one.
+      </p>
+
+      {/* measurements — one per row */}
+      <div className="divide-fd-border divide-y">
+        <SliderRow
+          label="Roundedness"
+          value={theme.radius}
+          min={0}
+          max={24}
+          step={1}
+          unit="px"
+          onChange={(radius) => updateTheme({ radius })}
+        />
+        <SliderRow
+          label="Borders"
+          value={theme.borderWidth}
+          min={0}
+          max={4}
+          step={0.5}
+          unit="px"
+          onChange={(borderWidth) => updateTheme({ borderWidth })}
+        />
+        <SliderRow
+          label="Shadows"
+          value={theme.shadowOpacity}
+          min={0}
+          max={1}
+          step={0.05}
+          onChange={(shadowOpacity) => updateTheme({ shadowOpacity })}
+        />
+      </div>
+
+      {/* base colors */}
+      <p className="text-fd-muted-foreground mb-1 mt-5 text-xs font-medium uppercase tracking-wide">
+        Colors ({mode})
+      </p>
+      <p className="text-fd-muted-foreground mb-1 text-xs">
+        Editing Primary or Background re-derives the full {mode} palette.
+      </p>
+      <div className="divide-fd-border divide-y">
+        {BASE_TOKENS.map((token) => {
+          const isBase = token === 'primary' || token === 'background';
+          return (
+            <ColorRow
+              key={`${mode}-${token}`}
+              label={COLOR_LABELS[token]}
+              value={activeColors[token]}
+              onChange={(value) =>
+                isBase
+                  ? deriveFromBase(token as 'primary' | 'background', value)
+                  : updateColor(token, value)
+              }
+            />
+          );
+        })}
+      </div>
+
+      {/* chart colors */}
+      <p className="text-fd-muted-foreground mb-1 mt-5 text-xs font-medium uppercase tracking-wide">
+        Chart colors ({mode})
+      </p>
+      <div className="divide-fd-border divide-y">
+        {CHART_TOKENS.map((token) => (
+          <ColorRow
+            key={`${mode}-${token}`}
+            label={COLOR_LABELS[token]}
+            value={activeColors[token]}
+            onChange={(value) => updateColor(token, value)}
+          />
+        ))}
+      </div>
+
+      {/* export — both light and dark palettes are included */}
+      <div className="mt-5 flex flex-col gap-3 border-t pt-5">
+        <div className="flex flex-wrap gap-3">
+          <CopyButton
+            label="Copy global.css"
+            getText={() => generateGlobalCss(theme)}
+            className="flex-1"
+          />
+          <CopyButton
+            label="Copy theme.ts"
+            getText={() => generateThemeTs(theme)}
+            className="flex-1"
+          />
+        </div>
+        <p className="text-fd-muted-foreground text-xs">
+          Exports both light and dark palettes. Paste into{' '}
+          <code className="font-mono">packages/library/reusables/global.css</code> and{' '}
+          <code className="font-mono">packages/library/reusables/lib/theme.ts</code>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* --------------------------------- customizer -------------------------------- */
+
+export function ThemeCustomizer() {
   return (
     <div className="not-prose grid grid-cols-1 gap-6 lg:grid-cols-2">
       {/* LEFT: controls */}
-      <div className="bg-fd-card rounded-lg border p-5">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-base font-semibold">Theme Customizer</h3>
-          <button
-            type="button"
-            onClick={reset}
-            className="text-fd-muted-foreground hover:text-fd-foreground inline-flex items-center gap-1.5 text-sm transition-colors"
-            aria-label="Reset theme to defaults">
-            <RotateCcw className="size-3.5" />
-            Reset
-          </button>
-        </div>
+      <ThemeCustomizerControls />
 
-        {/* measurements — one per row */}
-        <div className="divide-fd-border divide-y">
-          <SliderRow
-            label="Roundedness"
-            value={theme.radius}
-            min={0}
-            max={24}
-            step={1}
-            unit="px"
-            onChange={(radius) => updateTheme({ radius })}
-          />
-          <SliderRow
-            label="Borders"
-            value={theme.borderWidth}
-            min={0}
-            max={4}
-            step={0.5}
-            unit="px"
-            onChange={(borderWidth) => updateTheme({ borderWidth })}
-          />
-          <SliderRow
-            label="Shadows"
-            value={theme.shadowOpacity}
-            min={0}
-            max={1}
-            step={0.05}
-            onChange={(shadowOpacity) => updateTheme({ shadowOpacity })}
-          />
-        </div>
-
-        {/* base colors → editing Primary/Background re-derives everything */}
-        <p className="text-fd-muted-foreground mt-5 mb-1 text-xs font-medium uppercase tracking-wide">
-          Base colors
-        </p>
-        <p className="text-fd-muted-foreground mb-1 text-xs">
-          Editing Primary or Background re-derives the full palette.
-        </p>
-        <div className="divide-fd-border divide-y">
-          {BASE_TOKENS.map((token) => {
-            const isBase = token === 'primary' || token === 'background';
-            return (
-              <ColorRow
-                key={token}
-                label={COLOR_LABELS[token]}
-                value={theme.colors[token]}
-                onChange={(value) =>
-                  isBase
-                    ? deriveFromBase(token as 'primary' | 'background', value)
-                    : updateColor(token, value)
-                }
-              />
-            );
-          })}
-        </div>
-
-        {/* chart colors */}
-        <p className="text-fd-muted-foreground mt-5 mb-1 text-xs font-medium uppercase tracking-wide">
-          Chart colors
-        </p>
-        <div className="divide-fd-border divide-y">
-          {CHART_TOKENS.map((token) => (
-            <ColorRow
-              key={token}
-              label={COLOR_LABELS[token]}
-              value={theme.colors[token]}
-              onChange={(value) => updateColor(token, value)}
-            />
-          ))}
-        </div>
-
-        {/* export */}
-        <div className="mt-5 flex flex-col gap-3 border-t pt-5">
-          <div className="flex flex-wrap gap-3">
-            <CopyButton
-              label="Copy global.css"
-              getText={() => generateGlobalCss(theme)}
-              className="flex-1"
-            />
-            <CopyButton
-              label="Copy theme.ts"
-              getText={() => generateThemeTs(theme)}
-              className="flex-1"
-            />
-          </div>
-          <p className="text-fd-muted-foreground text-xs">
-            Paste into <code className="font-mono">packages/library/reusables/global.css</code> and{' '}
-            <code className="font-mono">packages/library/reusables/lib/theme.ts</code>
-          </p>
-        </div>
-      </div>
-
-      {/* RIGHT: live preview (scoped via ThemePreview in the mdx page) */}
+      {/* RIGHT: live preview (scoped via the ThemePreview wrapper in the mdx page) */}
       <div className="lg:sticky lg:top-24 lg:self-start">
         <PreviewSurface />
       </div>

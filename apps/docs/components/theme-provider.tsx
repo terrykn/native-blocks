@@ -1,10 +1,12 @@
 'use client';
 
+import { useTheme } from 'next-themes';
 import * as React from 'react';
 
 /* ----------------------------------- types ---------------------------------- */
 
 export type HSL = { h: number; s: number; l: number };
+export type Mode = 'light' | 'dark';
 
 export const COLOR_TOKENS = [
     'background',
@@ -71,10 +73,11 @@ export type ThemeState = {
     borderWidth: number;
     /** Shadow opacity (0–1) */
     shadowOpacity: number;
-    colors: ColorMap;
+    /** Independent palettes per color scheme. */
+    colors: Record<Mode, ColorMap>;
 };
 
-const STORAGE_KEY = 'docs-theme-customizer';
+const STORAGE_KEY = 'docs-theme-customizer-v2';
 
 /* ---------------------------------- helpers --------------------------------- */
 
@@ -127,8 +130,9 @@ export function hexToHsl(hex: string): HSL {
 const hsl = (h: number, s: number, l: number): HSL => ({ h, s, l });
 
 /* --------------------------------- defaults ---------------------------------- */
+/* Mirrors packages/library/reusables/global.css exactly. */
 
-export const DEFAULT_COLORS: ColorMap = {
+export const DEFAULT_LIGHT_COLORS: ColorMap = {
     background: hsl(0, 0, 100),
     foreground: hsl(0, 0, 3.9),
     card: hsl(0, 0, 100),
@@ -155,11 +159,41 @@ export const DEFAULT_COLORS: ColorMap = {
     'chart-5': hsl(27, 87, 67),
 };
 
+export const DEFAULT_DARK_COLORS: ColorMap = {
+    background: hsl(0, 0, 3.9),
+    foreground: hsl(0, 0, 98),
+    card: hsl(0, 0, 3.9),
+    'card-foreground': hsl(0, 0, 98),
+    popover: hsl(0, 0, 3.9),
+    'popover-foreground': hsl(0, 0, 98),
+    primary: hsl(0, 0, 98),
+    'primary-foreground': hsl(0, 0, 9),
+    secondary: hsl(0, 0, 14.9),
+    'secondary-foreground': hsl(0, 0, 98),
+    muted: hsl(0, 0, 14.9),
+    'muted-foreground': hsl(0, 0, 63.9),
+    accent: hsl(0, 0, 14.9),
+    'accent-foreground': hsl(0, 0, 98),
+    destructive: hsl(0, 70.9, 59.4),
+    'destructive-foreground': hsl(0, 0, 98),
+    border: hsl(0, 0, 14.9),
+    input: hsl(0, 0, 14.9),
+    ring: hsl(300, 0, 45),
+    'chart-1': hsl(220, 70, 50),
+    'chart-2': hsl(160, 60, 45),
+    'chart-3': hsl(30, 80, 55),
+    'chart-4': hsl(280, 65, 60),
+    'chart-5': hsl(340, 75, 55),
+};
+
 export const DEFAULT_THEME: ThemeState = {
     radius: 10,
     borderWidth: 1,
     shadowOpacity: 0.1,
-    colors: DEFAULT_COLORS,
+    colors: {
+        light: DEFAULT_LIGHT_COLORS,
+        dark: DEFAULT_DARK_COLORS,
+    },
 };
 
 /* ----------------------------- palette derivation ---------------------------- */
@@ -180,7 +214,7 @@ const DARK_CHARTS: HSL[] = [
 ];
 
 /**
- * Derives the full palette from `primary` + `background`.
+ * Derives a full palette from `primary` + `background`.
  * Used when the user edits one of the two "base" colors.
  */
 export function deriveColors(primary: HSL, background: HSL): ColorMap {
@@ -239,35 +273,22 @@ export function deriveColors(primary: HSL, background: HSL): ColorMap {
 
 /* ----------------------------- css var generation ---------------------------- */
 
-export function getColorTokens(t: ThemeState): Record<ColorToken, string> {
-    return Object.fromEntries(
-        COLOR_TOKENS.map((k) => [k, formatHsl(t.colors[k])])
-    ) as Record<ColorToken, string>;
-}
-
-/** Everything `ThemePreview` injects as inline CSS variables. */
-export function themeToCssVars(t: ThemeState): Record<string, string> {
+/** Everything `ThemePreview` injects as inline CSS variables, for the given mode. */
+export function themeToCssVars(t: ThemeState, mode: Mode): Record<string, string> {
+    const palette = t.colors[mode];
     const vars: Record<string, string> = {};
-    for (const k of COLOR_TOKENS) vars[`--${k}`] = formatHsl(t.colors[k]);
+    for (const k of COLOR_TOKENS) vars[`--${k}`] = formatHsl(palette[k]);
     vars['--radius'] = `${t.radius}px`;
     vars['--border-width'] = `${t.borderWidth}px`;
     vars['--shadow-intensity'] = `${t.shadowOpacity}`;
-    vars['--shadow-color'] = '0 0% 0%';
+    vars['--shadow-color'] = mode === 'dark' ? '0 0% 0%' : '0 0% 0%';
     return vars;
 }
 
 /* ------------------------------- code generation ----------------------------- */
 
-const invertColor = (c: HSL): HSL => ({ ...c, l: clamp(100 - c.l, 2, 98) });
-const invertColors = (m: ColorMap): ColorMap =>
-    Object.fromEntries(COLOR_TOKENS.map((k) => [k, invertColor(m[k])])) as ColorMap;
-
-/** Generates the full `packages/library/reusables/global.css` file. */
+/** Generates the full `packages/library/reusables/global.css` file from both palettes. */
 export function generateGlobalCss(theme: ThemeState): string {
-    const isDark = theme.colors.background.l < 50;
-    const lightColors = isDark ? invertColors(theme.colors) : theme.colors;
-    const darkColors = isDark ? theme.colors : invertColors(theme.colors);
-
     const block = (colors: ColorMap, indent = '    ') => {
         const lines = COLOR_TOKENS.map((k) => `${indent}--${k}: ${formatHsl(colors[k])};`);
         const ringIdx = lines.findIndex((l) => l.includes('--ring:'));
@@ -287,22 +308,18 @@ export function generateGlobalCss(theme: ThemeState): string {
 
 @layer base {
   :root {
-${block(lightColors)}
+${block(theme.colors.light)}
   }
 
   .dark:root {
-${block(darkColors)}
+${block(theme.colors.dark)}
   }
 }
 `;
 }
 
-/** Generates the full `packages/library/reusables/lib/theme.ts` file. */
+/** Generates the full `packages/library/reusables/lib/theme.ts` file from both palettes. */
 export function generateThemeTs(theme: ThemeState): string {
-    const isDark = theme.colors.background.l < 50;
-    const lightColors = isDark ? invertColors(theme.colors) : theme.colors;
-    const darkColors = isDark ? theme.colors : invertColors(theme.colors);
-
     const block = (colors: ColorMap) => {
         const lines = COLOR_TOKENS.map((k) => {
             const key = k.replace(/-(\w)/g, (_, c: string) => c.toUpperCase());
@@ -317,10 +334,10 @@ export function generateThemeTs(theme: ThemeState): string {
 
 export const THEME = {
   light: {
-${block(lightColors)}
+${block(theme.colors.light)}
   },
   dark: {
-${block(darkColors)}
+${block(theme.colors.dark)}
   },
 };
 
@@ -355,17 +372,23 @@ export const NAV_THEME: Record<'light' | 'dark', Theme> = {
 
 type ThemeContextValue = {
     theme: ThemeState;
+    /** The site's active color scheme ('light' until mounted). */
+    mode: Mode;
+    /** Shortcut for theme.colors[mode]. */
+    activeColors: ColorMap;
     setTheme: React.Dispatch<React.SetStateAction<ThemeState>>;
     updateTheme: (partial: Partial<Omit<ThemeState, 'colors'>>) => void;
-    /** Set a single color token without touching the others. */
+    /** Set a single color token in the ACTIVE mode's palette. */
     updateColor: (token: ColorToken, value: HSL) => void;
-    /** Re-derive the whole palette from a new base color. */
+    /** Re-derive the ACTIVE mode's entire palette from a new base color. */
     deriveFromBase: (base: 'primary' | 'background', value: HSL) => void;
     reset: () => void;
 };
 
 const ThemeContext = React.createContext<ThemeContextValue>({
     theme: DEFAULT_THEME,
+    mode: 'light',
+    activeColors: DEFAULT_LIGHT_COLORS,
     setTheme: () => undefined,
     updateTheme: () => undefined,
     updateColor: () => undefined,
@@ -375,8 +398,15 @@ const ThemeContext = React.createContext<ThemeContextValue>({
 
 export function ThemeProvider({ children }: React.PropsWithChildren) {
     const [theme, setTheme] = React.useState<ThemeState>(DEFAULT_THEME);
+    const [mounted, setMounted] = React.useState(false);
+    const { resolvedTheme } = useTheme();
+
+    // 'light' during SSR/first paint to avoid hydration mismatches,
+    // then follows the fumadocs/next-themes toggle.
+    const mode: Mode = mounted && resolvedTheme === 'dark' ? 'dark' : 'light';
 
     React.useEffect(() => {
+        setMounted(true);
         try {
             const stored = window.localStorage.getItem(STORAGE_KEY);
             if (stored) {
@@ -384,7 +414,10 @@ export function ThemeProvider({ children }: React.PropsWithChildren) {
                 setTheme({
                     ...DEFAULT_THEME,
                     ...parsed,
-                    colors: { ...DEFAULT_COLORS, ...(parsed.colors ?? {}) },
+                    colors: {
+                        light: { ...DEFAULT_LIGHT_COLORS, ...(parsed.colors?.light ?? {}) },
+                        dark: { ...DEFAULT_DARK_COLORS, ...(parsed.colors?.dark ?? {}) },
+                    },
                 });
             }
         } catch {
@@ -393,37 +426,60 @@ export function ThemeProvider({ children }: React.PropsWithChildren) {
     }, []);
 
     React.useEffect(() => {
+        if (!mounted) return;
         try {
             window.localStorage.setItem(STORAGE_KEY, JSON.stringify(theme));
         } catch {
             // ignore storage errors
         }
-    }, [theme]);
+    }, [theme, mounted]);
 
     const updateTheme = React.useCallback((partial: Partial<Omit<ThemeState, 'colors'>>) => {
         setTheme((prev) => ({ ...prev, ...partial }));
     }, []);
 
-    const updateColor = React.useCallback((token: ColorToken, value: HSL) => {
-        setTheme((prev) => ({ ...prev, colors: { ...prev.colors, [token]: value } }));
-    }, []);
+    const updateColor = React.useCallback(
+        (token: ColorToken, value: HSL) => {
+            setTheme((prev) => ({
+                ...prev,
+                colors: {
+                    ...prev.colors,
+                    [mode]: { ...prev.colors[mode], [token]: value },
+                },
+            }));
+        },
+        [mode]
+    );
 
     const deriveFromBase = React.useCallback(
         (base: 'primary' | 'background', value: HSL) => {
             setTheme((prev) => {
-                const primary = base === 'primary' ? value : prev.colors.primary;
-                const background = base === 'background' ? value : prev.colors.background;
-                return { ...prev, colors: deriveColors(primary, background) };
+                const current = prev.colors[mode];
+                const primary = base === 'primary' ? value : current.primary;
+                const background = base === 'background' ? value : current.background;
+                return {
+                    ...prev,
+                    colors: { ...prev.colors, [mode]: deriveColors(primary, background) },
+                };
             });
         },
-        []
+        [mode]
     );
 
     const reset = React.useCallback(() => setTheme(DEFAULT_THEME), []);
 
     const value = React.useMemo(
-        () => ({ theme, setTheme, updateTheme, updateColor, deriveFromBase, reset }),
-        [theme, updateTheme, updateColor, deriveFromBase, reset]
+        () => ({
+            theme,
+            mode,
+            activeColors: theme.colors[mode],
+            setTheme,
+            updateTheme,
+            updateColor,
+            deriveFromBase,
+            reset,
+        }),
+        [theme, mode, updateTheme, updateColor, deriveFromBase, reset]
     );
 
     return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

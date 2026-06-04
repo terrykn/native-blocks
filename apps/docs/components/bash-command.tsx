@@ -4,7 +4,7 @@ export function BashCommand({ command }: { command: string }) {
   return (
     <div className="dark">
       <CodeBlock>
-        <Pre>
+        <Pre className="text-white bg-fd-muted">
           <code>{command}</code>
         </Pre>
       </CodeBlock>
