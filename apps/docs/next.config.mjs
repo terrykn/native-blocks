@@ -23,9 +23,6 @@ const config = {
     '@shopify/flash-list',
     '@rn-primitives',
   ],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },

@@ -79,8 +79,8 @@ type WindowSize = {
 
 function useWindowSize(): WindowSize {
   const [size, setSize] = React.useState<WindowSize>({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: 0,
+    height: 0,
   });
 
   React.useEffect(() => {
@@ -91,6 +91,7 @@ function useWindowSize(): WindowSize {
       });
     }
 
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -101,9 +102,7 @@ function useWindowSize(): WindowSize {
 }
 
 function useIsDarkMode(): boolean {
-  const [isDark, setIsDark] = React.useState(() =>
-    document.documentElement.classList.contains('dark')
-  );
+  const [isDark, setIsDark] = React.useState(false);
 
   React.useEffect(() => {
     const htmlEl = document.documentElement;
