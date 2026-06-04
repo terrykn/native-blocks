@@ -6,6 +6,64 @@ import * as React from 'react';
 
 export type HSL = { h: number; s: number; l: number };
 
+export const COLOR_TOKENS = [
+    'background',
+    'foreground',
+    'card',
+    'card-foreground',
+    'popover',
+    'popover-foreground',
+    'primary',
+    'primary-foreground',
+    'secondary',
+    'secondary-foreground',
+    'muted',
+    'muted-foreground',
+    'accent',
+    'accent-foreground',
+    'destructive',
+    'destructive-foreground',
+    'border',
+    'input',
+    'ring',
+    'chart-1',
+    'chart-2',
+    'chart-3',
+    'chart-4',
+    'chart-5',
+] as const;
+
+export type ColorToken = (typeof COLOR_TOKENS)[number];
+
+export const COLOR_LABELS: Record<ColorToken, string> = {
+    background: 'Background',
+    foreground: 'Foreground',
+    card: 'Card',
+    'card-foreground': 'Card Foreground',
+    popover: 'Popover',
+    'popover-foreground': 'Popover Foreground',
+    primary: 'Primary',
+    'primary-foreground': 'Primary Foreground',
+    secondary: 'Secondary',
+    'secondary-foreground': 'Secondary Foreground',
+    muted: 'Muted',
+    'muted-foreground': 'Muted Foreground',
+    accent: 'Accent',
+    'accent-foreground': 'Accent Foreground',
+    destructive: 'Destructive',
+    'destructive-foreground': 'Destructive Foreground',
+    border: 'Border',
+    input: 'Input',
+    ring: 'Ring',
+    'chart-1': 'Chart 1',
+    'chart-2': 'Chart 2',
+    'chart-3': 'Chart 3',
+    'chart-4': 'Chart 4',
+    'chart-5': 'Chart 5',
+};
+
+export type ColorMap = Record<ColorToken, HSL>;
+
 export type ThemeState = {
     /** Border radius in px (0–24) */
     radius: number;
@@ -13,16 +71,7 @@ export type ThemeState = {
     borderWidth: number;
     /** Shadow opacity (0–1) */
     shadowOpacity: number;
-    primary: HSL;
-    background: HSL;
-};
-
-export const DEFAULT_THEME: ThemeState = {
-    radius: 10,
-    borderWidth: 1,
-    shadowOpacity: 0.1,
-    primary: { h: 0, s: 0, l: 9 },
-    background: { h: 0, s: 0, l: 100 },
+    colors: ColorMap;
 };
 
 const STORAGE_KEY = 'docs-theme-customizer';
@@ -75,71 +124,90 @@ export function hexToHsl(hex: string): HSL {
     return { h: round(h), s: round(s * 100), l: round(l * 100) };
 }
 
+const hsl = (h: number, s: number, l: number): HSL => ({ h, s, l });
+
+/* --------------------------------- defaults ---------------------------------- */
+
+export const DEFAULT_COLORS: ColorMap = {
+    background: hsl(0, 0, 100),
+    foreground: hsl(0, 0, 3.9),
+    card: hsl(0, 0, 100),
+    'card-foreground': hsl(0, 0, 3.9),
+    popover: hsl(0, 0, 100),
+    'popover-foreground': hsl(0, 0, 3.9),
+    primary: hsl(0, 0, 9),
+    'primary-foreground': hsl(0, 0, 98),
+    secondary: hsl(0, 0, 96.1),
+    'secondary-foreground': hsl(0, 0, 9),
+    muted: hsl(0, 0, 96.1),
+    'muted-foreground': hsl(0, 0, 45.1),
+    accent: hsl(0, 0, 96.1),
+    'accent-foreground': hsl(0, 0, 9),
+    destructive: hsl(0, 84.2, 60.2),
+    'destructive-foreground': hsl(0, 0, 98),
+    border: hsl(0, 0, 89.8),
+    input: hsl(0, 0, 89.8),
+    ring: hsl(0, 0, 63),
+    'chart-1': hsl(12, 76, 61),
+    'chart-2': hsl(173, 58, 39),
+    'chart-3': hsl(197, 37, 24),
+    'chart-4': hsl(43, 74, 66),
+    'chart-5': hsl(27, 87, 67),
+};
+
+export const DEFAULT_THEME: ThemeState = {
+    radius: 10,
+    borderWidth: 1,
+    shadowOpacity: 0.1,
+    colors: DEFAULT_COLORS,
+};
+
 /* ----------------------------- palette derivation ---------------------------- */
 
 const LIGHT_CHARTS: HSL[] = [
-    { h: 12, s: 76, l: 61 },
-    { h: 173, s: 58, l: 39 },
-    { h: 197, s: 37, l: 24 },
-    { h: 43, s: 74, l: 66 },
-    { h: 27, s: 87, l: 67 },
+    hsl(12, 76, 61),
+    hsl(173, 58, 39),
+    hsl(197, 37, 24),
+    hsl(43, 74, 66),
+    hsl(27, 87, 67),
 ];
-
 const DARK_CHARTS: HSL[] = [
-    { h: 220, s: 70, l: 50 },
-    { h: 160, s: 60, l: 45 },
-    { h: 30, s: 80, l: 55 },
-    { h: 280, s: 65, l: 60 },
-    { h: 340, s: 75, l: 55 },
+    hsl(220, 70, 50),
+    hsl(160, 60, 45),
+    hsl(30, 80, 55),
+    hsl(280, 65, 60),
+    hsl(340, 75, 55),
 ];
 
 /**
- * Derives the entire color palette from just `primary` and `background`.
- * Surfaces, borders, foregrounds, ring and charts all follow automatically.
+ * Derives the full palette from `primary` + `background`.
+ * Used when the user edits one of the two "base" colors.
  */
-export function deriveColors(primary: HSL, background: HSL): Record<string, HSL> {
+export function deriveColors(primary: HSL, background: HSL): ColorMap {
     const isDark = background.l < 50;
 
-    const foreground: HSL = {
-        h: background.h,
-        s: Math.min(background.s, 10),
-        l: isDark ? 98 : 3.9,
-    };
+    const foreground = hsl(background.h, Math.min(background.s, 10), isDark ? 98 : 3.9);
+    const surface = hsl(
+        background.h,
+        Math.min(background.s + 2, 30),
+        isDark ? clamp(background.l + 11, 8, 32) : clamp(background.l - 3.9, 78, 97)
+    );
+    const surfaceForeground = hsl(background.h, Math.min(background.s, 10), isDark ? 98 : 9);
+    const border = hsl(
+        background.h,
+        Math.min(background.s + 2, 25),
+        isDark ? clamp(background.l + 11, 10, 34) : clamp(background.l - 10.2, 68, 92)
+    );
+    const primaryForeground = hsl(primary.h, Math.min(primary.s, 15), primary.l >= 60 ? 9 : 98);
 
-    const surface: HSL = {
-        h: background.h,
-        s: Math.min(background.s + 2, 30),
-        l: isDark ? clamp(background.l + 11, 8, 32) : clamp(background.l - 3.9, 78, 97),
-    };
-
-    const surfaceForeground: HSL = {
-        h: background.h,
-        s: Math.min(background.s, 10),
-        l: isDark ? 98 : 9,
-    };
-
-    const border: HSL = {
-        h: background.h,
-        s: Math.min(background.s + 2, 25),
-        l: isDark ? clamp(background.l + 11, 10, 34) : clamp(background.l - 10.2, 68, 92),
-    };
-
-    const primaryForeground: HSL = {
-        h: primary.h,
-        s: Math.min(primary.s, 15),
-        l: primary.l >= 60 ? 9 : 98,
-    };
-
-    const charts: HSL[] =
+    const charts =
         primary.s < 10
             ? isDark
                 ? DARK_CHARTS
                 : LIGHT_CHARTS
-            : [0, 40, 90, 160, 210].map((offset) => ({
-                h: (primary.h + offset) % 360,
-                s: clamp(primary.s, 45, 80),
-                l: isDark ? 55 : 50,
-            }));
+            : [0, 40, 90, 160, 210].map((o) =>
+                hsl((primary.h + o) % 360, clamp(primary.s, 45, 80), isDark ? 55 : 50)
+            );
 
     return {
         background,
@@ -153,18 +221,14 @@ export function deriveColors(primary: HSL, background: HSL): Record<string, HSL>
         secondary: surface,
         'secondary-foreground': surfaceForeground,
         muted: surface,
-        'muted-foreground': {
-            h: background.h,
-            s: Math.min(background.s, 12),
-            l: isDark ? 63.9 : 45.1,
-        },
+        'muted-foreground': hsl(background.h, Math.min(background.s, 12), isDark ? 63.9 : 45.1),
         accent: surface,
         'accent-foreground': surfaceForeground,
-        destructive: isDark ? { h: 0, s: 70.9, l: 59.4 } : { h: 0, s: 84.2, l: 60.2 },
-        'destructive-foreground': { h: 0, s: 0, l: 98 },
+        destructive: isDark ? hsl(0, 70.9, 59.4) : hsl(0, 84.2, 60.2),
+        'destructive-foreground': hsl(0, 0, 98),
         border,
         input: border,
-        ring: { h: primary.h, s: Math.min(primary.s, 60), l: isDark ? 45 : 63 },
+        ring: hsl(primary.h, Math.min(primary.s, 60), isDark ? 45 : 63),
         'chart-1': charts[0],
         'chart-2': charts[1],
         'chart-3': charts[2],
@@ -173,48 +237,46 @@ export function deriveColors(primary: HSL, background: HSL): Record<string, HSL>
     };
 }
 
-export function getColorTokens(t: ThemeState): Record<string, string> {
-    const colors = deriveColors(t.primary, t.background);
-    return Object.fromEntries(Object.entries(colors).map(([k, v]) => [k, formatHsl(v)]));
+/* ----------------------------- css var generation ---------------------------- */
+
+export function getColorTokens(t: ThemeState): Record<ColorToken, string> {
+    return Object.fromEntries(
+        COLOR_TOKENS.map((k) => [k, formatHsl(t.colors[k])])
+    ) as Record<ColorToken, string>;
 }
 
 /** Everything `ThemePreview` injects as inline CSS variables. */
 export function themeToCssVars(t: ThemeState): Record<string, string> {
-    const colors = getColorTokens(t);
-    return {
-        ...Object.fromEntries(Object.entries(colors).map(([k, v]) => [`--${k}`, v])),
-        '--radius': `${t.radius}px`,
-        '--border-width': `${t.borderWidth}px`,
-        '--shadow-intensity': `${t.shadowOpacity}`,
-        '--shadow-color': '0 0% 0%',
-    };
+    const vars: Record<string, string> = {};
+    for (const k of COLOR_TOKENS) vars[`--${k}`] = formatHsl(t.colors[k]);
+    vars['--radius'] = `${t.radius}px`;
+    vars['--border-width'] = `${t.borderWidth}px`;
+    vars['--shadow-intensity'] = `${t.shadowOpacity}`;
+    vars['--shadow-color'] = '0 0% 0%';
+    return vars;
 }
 
 /* ------------------------------- code generation ----------------------------- */
 
-function invertTheme(t: ThemeState): ThemeState {
-    return {
-        ...t,
-        background: { ...t.background, l: clamp(100 - t.background.l, 2, 98) },
-        primary: { ...t.primary, l: clamp(100 - t.primary.l, 2, 98) },
-    };
-}
+const invertColor = (c: HSL): HSL => ({ ...c, l: clamp(100 - c.l, 2, 98) });
+const invertColors = (m: ColorMap): ColorMap =>
+    Object.fromEntries(COLOR_TOKENS.map((k) => [k, invertColor(m[k])])) as ColorMap;
 
 /** Generates the full `packages/library/reusables/global.css` file. */
 export function generateGlobalCss(theme: ThemeState): string {
-    const isDark = theme.background.l < 50;
-    const light = isDark ? invertTheme(theme) : theme;
-    const dark = isDark ? theme : invertTheme(theme);
+    const isDark = theme.colors.background.l < 50;
+    const lightColors = isDark ? invertColors(theme.colors) : theme.colors;
+    const darkColors = isDark ? theme.colors : invertColors(theme.colors);
 
-    const block = (t: ThemeState, indent = '    ') => {
-        const lines = Object.entries(getColorTokens(t)).map(([k, v]) => `${indent}--${k}: ${v};`);
+    const block = (colors: ColorMap, indent = '    ') => {
+        const lines = COLOR_TOKENS.map((k) => `${indent}--${k}: ${formatHsl(colors[k])};`);
         const ringIdx = lines.findIndex((l) => l.includes('--ring:'));
         lines.splice(
             ringIdx + 1,
             0,
-            `${indent}--radius: ${t.radius}px;`,
-            `${indent}--border-width: ${t.borderWidth}px;`,
-            `${indent}--shadow-intensity: ${t.shadowOpacity};`
+            `${indent}--radius: ${theme.radius}px;`,
+            `${indent}--border-width: ${theme.borderWidth}px;`,
+            `${indent}--shadow-intensity: ${theme.shadowOpacity};`
         );
         return lines.join('\n');
     };
@@ -225,11 +287,11 @@ export function generateGlobalCss(theme: ThemeState): string {
 
 @layer base {
   :root {
-${block(light)}
+${block(lightColors)}
   }
 
   .dark:root {
-${block(dark)}
+${block(darkColors)}
   }
 }
 `;
@@ -237,17 +299,17 @@ ${block(dark)}
 
 /** Generates the full `packages/library/reusables/lib/theme.ts` file. */
 export function generateThemeTs(theme: ThemeState): string {
-    const isDark = theme.background.l < 50;
-    const light = isDark ? invertTheme(theme) : theme;
-    const dark = isDark ? theme : invertTheme(theme);
+    const isDark = theme.colors.background.l < 50;
+    const lightColors = isDark ? invertColors(theme.colors) : theme.colors;
+    const darkColors = isDark ? theme.colors : invertColors(theme.colors);
 
-    const block = (t: ThemeState) => {
-        const lines = Object.entries(getColorTokens(t)).map(([k, v]) => {
+    const block = (colors: ColorMap) => {
+        const lines = COLOR_TOKENS.map((k) => {
             const key = k.replace(/-(\w)/g, (_, c: string) => c.toUpperCase());
-            return `    ${key}: 'hsl(${v})',`;
+            return `    ${key}: 'hsl(${formatHsl(colors[k])})',`;
         });
         const ringIdx = lines.findIndex((l) => l.includes('ring:'));
-        lines.splice(ringIdx + 1, 0, `    radius: '${t.radius}px',`);
+        lines.splice(ringIdx + 1, 0, `    radius: '${theme.radius}px',`);
         return lines.join('\n');
     };
 
@@ -255,10 +317,10 @@ export function generateThemeTs(theme: ThemeState): string {
 
 export const THEME = {
   light: {
-${block(light)}
+${block(lightColors)}
   },
   dark: {
-${block(dark)}
+${block(darkColors)}
   },
 };
 
@@ -294,7 +356,11 @@ export const NAV_THEME: Record<'light' | 'dark', Theme> = {
 type ThemeContextValue = {
     theme: ThemeState;
     setTheme: React.Dispatch<React.SetStateAction<ThemeState>>;
-    updateTheme: (partial: Partial<ThemeState>) => void;
+    updateTheme: (partial: Partial<Omit<ThemeState, 'colors'>>) => void;
+    /** Set a single color token without touching the others. */
+    updateColor: (token: ColorToken, value: HSL) => void;
+    /** Re-derive the whole palette from a new base color. */
+    deriveFromBase: (base: 'primary' | 'background', value: HSL) => void;
     reset: () => void;
 };
 
@@ -302,18 +368,24 @@ const ThemeContext = React.createContext<ThemeContextValue>({
     theme: DEFAULT_THEME,
     setTheme: () => undefined,
     updateTheme: () => undefined,
+    updateColor: () => undefined,
+    deriveFromBase: () => undefined,
     reset: () => undefined,
 });
 
 export function ThemeProvider({ children }: React.PropsWithChildren) {
     const [theme, setTheme] = React.useState<ThemeState>(DEFAULT_THEME);
 
-    // Hydration-safe restore from localStorage
     React.useEffect(() => {
         try {
             const stored = window.localStorage.getItem(STORAGE_KEY);
             if (stored) {
-                setTheme({ ...DEFAULT_THEME, ...(JSON.parse(stored) as Partial<ThemeState>) });
+                const parsed = JSON.parse(stored) as Partial<ThemeState>;
+                setTheme({
+                    ...DEFAULT_THEME,
+                    ...parsed,
+                    colors: { ...DEFAULT_COLORS, ...(parsed.colors ?? {}) },
+                });
             }
         } catch {
             // ignore corrupted storage
@@ -328,15 +400,30 @@ export function ThemeProvider({ children }: React.PropsWithChildren) {
         }
     }, [theme]);
 
-    const updateTheme = React.useCallback((partial: Partial<ThemeState>) => {
+    const updateTheme = React.useCallback((partial: Partial<Omit<ThemeState, 'colors'>>) => {
         setTheme((prev) => ({ ...prev, ...partial }));
     }, []);
+
+    const updateColor = React.useCallback((token: ColorToken, value: HSL) => {
+        setTheme((prev) => ({ ...prev, colors: { ...prev.colors, [token]: value } }));
+    }, []);
+
+    const deriveFromBase = React.useCallback(
+        (base: 'primary' | 'background', value: HSL) => {
+            setTheme((prev) => {
+                const primary = base === 'primary' ? value : prev.colors.primary;
+                const background = base === 'background' ? value : prev.colors.background;
+                return { ...prev, colors: deriveColors(primary, background) };
+            });
+        },
+        []
+    );
 
     const reset = React.useCallback(() => setTheme(DEFAULT_THEME), []);
 
     const value = React.useMemo(
-        () => ({ theme, setTheme, updateTheme, reset }),
-        [theme, updateTheme, reset]
+        () => ({ theme, setTheme, updateTheme, updateColor, deriveFromBase, reset }),
+        [theme, updateTheme, updateColor, deriveFromBase, reset]
     );
 
     return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
