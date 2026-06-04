@@ -21,6 +21,8 @@ The goal is to provide production-ready, copy-paste React Native components and 
 ### Docs
 
 - `apps/docs/mdx-components.tsx` to create custom components used in `.mdx` files (not required unless we need any new components to be used in .mdx)
+- `apps/docs/content/docs/blocks` contains documentation for every block. Create a new folder with an index.mdx for a new section/category of blocks that get shown in a block grid. Create block-name.mdx along with their information inside the folder for every block in that section.
+- `apps/docs/content/docs/components` contains documentation for every component. Works the same as `apps/docs/content/docs/blocks`. But for our current purposes, we are focused on blocks more, so sections are more important for blocks and we do not need sections for components.
 - `apps/docs/components/examples.tsx` to update the components
 - `apps/docs/components/blocks.tsx` to update the blocks
 - `apps/docs/lib/file-generator.ts` to update the import paths in the code blocks
