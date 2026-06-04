@@ -2,6 +2,7 @@
 
 import { RnrIcon } from '@docs/components/icons/rnr-icon';
 import { PlatformSelect, usePlatform } from '@docs/components/platform-select';
+import { ThemePreview } from '@docs/components/theme-preview';
 import { useParams } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
 import * as React from 'react';
@@ -37,7 +38,9 @@ export function PreviewCard({ preview }: PreviewCardProps) {
               <p className="text-center font-mono text-sm">Scan to preview.</p>
             </div>
           ) : (
-            preview
+            <ThemePreview className="flex flex-1 flex-col items-center justify-center">
+              {preview}
+            </ThemePreview>
           )}
         </div>
       </div>
@@ -61,7 +64,9 @@ export function BlockPreviewCard({ preview }: PreviewCardProps) {
   return (
     <div className="group/copy bg-card not-prose relative flex min-h-[450px] flex-col rounded-md border">
       <div className="flex flex-1 flex-col items-center justify-center py-6 sm:px-4 sm:py-8">
-        {preview}
+        <ThemePreview className="flex flex-1 flex-col items-center justify-center">
+          {preview}
+        </ThemePreview>
       </div>
     </div>
   );

@@ -89,9 +89,27 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       borderRadius: {
+        xl: 'calc(var(--radius) + 4px)',
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      // Reacts to the Theme Customizer inside ThemePreview's scope.
+      // Fallback (1px) keeps the docs UI identical everywhere else.
+      borderWidth: {
+        DEFAULT: 'var(--border-width, 1px)',
+      },
+      // Shadows scale with --shadow-intensity inside ThemePreview's scope.
+      // Fallbacks mirror Tailwind's default shadow opacities.
+      boxShadow: {
+        sm: '0 1px 2px 0 hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.05))',
+        DEFAULT:
+          '0 1px 3px 0 hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1)), 0 1px 2px -1px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1))',
+        md: '0 4px 6px -1px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1)), 0 2px 4px -2px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1))',
+        lg: '0 10px 15px -3px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1)), 0 4px 6px -4px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1))',
+        xl: '0 20px 25px -5px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1)), 0 8px 10px -6px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1))',
+        '2xl': '0 25px 50px -12px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.25))',
+        none: 'none',
       },
     },
   },

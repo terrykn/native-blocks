@@ -22,6 +22,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </div>
           ),
         }}
+        links={[]}
         sidebar={SIDEBAR_PROPS}
         githubUrl="https://github.com/gabimoncha/rnr-registry-template">
         {children}

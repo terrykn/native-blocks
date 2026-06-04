@@ -3,6 +3,8 @@ import { BlocksGrid } from '@docs/components/blocks-grid';
 import { CommandTabs } from '@docs/components/command-tabs';
 import { ExternalLinks } from '@docs/components/external-links';
 import { BlockPreviewCard, PreviewCard } from '@docs/components/preview-card';
+import { ThemeCustomizer } from '@docs/components/theme-customizer';
+import { ThemePreview } from '@docs/components/theme-preview';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@docs/components/ui/tabs';
 import { cn } from '@docs/lib/utils';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
@@ -42,6 +44,8 @@ const mdxComponents: MDXComponents = {
   TabsList,
   TabsTrigger,
   PreviewCard,
+  ThemeCustomizer,
+  ThemePreview,
 };
 
 const lineNumberClassNames = cn(
