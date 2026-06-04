@@ -83,6 +83,15 @@ importers:
       react-native:
         specifier: 0.79.5
         version: 0.79.5(@babel/core@7.29.7)(@types/react@19.0.14)(react@19.0.0)
+      react-native-gesture-handler:
+        specifier: ~2.24.0
+        version: 2.24.0(react-native@0.79.5(@babel/core@7.29.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-reanimated:
+        specifier: ~3.17.5
+        version: 3.17.5(@babel/core@7.29.7)(react-native@0.79.5(@babel/core@7.29.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-safe-area-context:
+        specifier: 5.4.0
+        version: 5.4.0(react-native@0.79.5(@babel/core@7.29.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-web:
         specifier: ~0.21.0
         version: 0.21.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -218,7 +227,7 @@ importers:
         version: 0.21.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       shadcn:
         specifier: 2.9.2
-        version: 2.9.2(@types/node@22.10.5)(typescript@5.9.3)
+        version: 2.9.2(@types/node@24.12.4)(typescript@5.9.3)
       tailwind-merge:
         specifier: ^2.2.1
         version: 2.6.1
@@ -7952,6 +7961,13 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.10.5
 
+  '@inquirer/confirm@6.1.1(@types/node@24.12.4)':
+    dependencies:
+      '@inquirer/core': 11.2.1(@types/node@24.12.4)
+      '@inquirer/type': 4.0.7(@types/node@24.12.4)
+    optionalDependencies:
+      '@types/node': 24.12.4
+
   '@inquirer/core@11.2.1(@types/node@22.10.5)':
     dependencies:
       '@inquirer/ansi': 2.0.7
@@ -7964,11 +7980,27 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.10.5
 
+  '@inquirer/core@11.2.1(@types/node@24.12.4)':
+    dependencies:
+      '@inquirer/ansi': 2.0.7
+      '@inquirer/figures': 2.0.7
+      '@inquirer/type': 4.0.7(@types/node@24.12.4)
+      cli-width: 4.1.0
+      fast-wrap-ansi: 0.2.2
+      mute-stream: 3.0.0
+      signal-exit: 4.1.0
+    optionalDependencies:
+      '@types/node': 24.12.4
+
   '@inquirer/figures@2.0.7': {}
 
   '@inquirer/type@4.0.7(@types/node@22.10.5)':
     optionalDependencies:
       '@types/node': 22.10.5
+
+  '@inquirer/type@4.0.7(@types/node@24.12.4)':
+    optionalDependencies:
+      '@types/node': 24.12.4
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -12562,6 +12594,31 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
+  msw@2.14.6(@types/node@24.12.4)(typescript@5.9.3):
+    dependencies:
+      '@inquirer/confirm': 6.1.1(@types/node@24.12.4)
+      '@mswjs/interceptors': 0.41.9
+      '@open-draft/deferred-promise': 3.0.0
+      '@types/statuses': 2.0.6
+      cookie: 1.1.1
+      graphql: 16.14.1
+      headers-polyfill: 5.0.1
+      is-node-process: 1.2.0
+      outvariant: 1.4.3
+      path-to-regexp: 6.3.0
+      picocolors: 1.1.1
+      rettime: 0.11.11
+      statuses: 2.0.2
+      strict-event-emitter: 0.5.1
+      tough-cookie: 6.0.1
+      type-fest: 5.7.0
+      until-async: 3.0.2
+      yargs: 17.7.2
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - '@types/node'
+
   mute-stream@3.0.0: {}
 
   mz@2.7.0:
@@ -13680,6 +13737,39 @@ snapshots:
       https-proxy-agent: 6.2.1
       kleur: 4.1.5
       msw: 2.14.6(@types/node@22.10.5)(typescript@5.9.3)
+      node-fetch: 3.3.2
+      ora: 6.3.1
+      postcss: 8.5.15
+      prompts: 2.4.2
+      recast: 0.23.11
+      stringify-object: 5.0.0
+      ts-morph: 18.0.0
+      tsconfig-paths: 4.2.0
+      zod: 3.25.76
+      zod-to-json-schema: 3.25.2(zod@3.25.76)
+    transitivePeerDependencies:
+      - '@cfworker/json-schema'
+      - '@types/node'
+      - supports-color
+      - typescript
+
+  shadcn@2.9.2(@types/node@24.12.4)(typescript@5.9.3):
+    dependencies:
+      '@antfu/ni': 23.3.1
+      '@babel/core': 7.29.7
+      '@babel/parser': 7.29.7
+      '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
+      '@modelcontextprotocol/sdk': 1.29.0(zod@3.25.76)
+      commander: 10.0.1
+      cosmiconfig: 8.3.6(typescript@5.9.3)
+      deepmerge: 4.3.1
+      diff: 5.2.2
+      execa: 7.2.0
+      fast-glob: 3.3.3
+      fs-extra: 11.3.5
+      https-proxy-agent: 6.2.1
+      kleur: 4.1.5
+      msw: 2.14.6(@types/node@24.12.4)(typescript@5.9.3)
       node-fetch: 3.3.2
       ora: 6.3.1
       postcss: 8.5.15
