@@ -1,4 +1,4 @@
-import { docs } from '@docs/.source';
+import { docs } from 'collections/server'; 
 import { loader } from 'fumadocs-core/source';
 import { icons } from 'lucide-react';
 import { createElement } from 'react';
