@@ -3,7 +3,7 @@ title: Installation
 description: Getting Started with Native Blocks
 ---
 
-## Getting Started
+## Project Setup
 
 Run the `init` command to start a new project, or set up an existing one.
 
@@ -35,6 +35,47 @@ Run the `init` command to start a new project, or set up an existing one.
 </Tabs>
 
 This command will initialize Native Blocks in your project and set up the necessary configurations.
+
+### Add blocks
+
+Once initialized, you can start adding blocks to your project.
+
+<Tabs defaultValue="npm">
+  <TabsList>
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="bun">bun</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+    <TabsTrigger value="yarn">yarn</TabsTrigger>
+    <TabsTrigger value="yarn@berry">yarn @berry</TabsTrigger>
+  </TabsList>
+  <TabsContent value="npm">
+    <BashCommand command={`npx native-blocks add account-setup`} />
+  </TabsContent>
+  <TabsContent value="bun">
+    <BashCommand command={`bunx native-blocks add account-setup`} />
+  </TabsContent>
+  <TabsContent value="pnpm">
+    <BashCommand command={`pnpm dlx native-blocks add account-setup`} />
+  </TabsContent>
+  <TabsContent value="yarn">
+    <BashCommand command={`npx native-blocks add account-setup`} />
+  </TabsContent>
+  <TabsContent value="yarn@berry">
+    <BashCommand command={`yarn dlx native-blocks add account-setup`} />
+  </TabsContent>
+</Tabs>
+
+The command above will add the `AccountSetup` block to your project. You can then import it like this:
+
+```tsx title="app/index.tsx"
+import { AccountSetup } from '@/blocks/account-setup
+
+export default function Screen() {
+  return (
+    <AccountSetup />
+  );
+}
+```
 
 ### Add components
 
