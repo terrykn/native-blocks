@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "account-setup",
+  "type": "registry:block",
+  "title": "Account Setup",
+  "author": "@terrykn",
+  "description": "Account onboarding setup",
+  "registryDependencies": [
+    "https://reactnativereusables.com/r/new-york/text.json",
+    "https://reactnativereusables.com/r/new-york/button.json",
+    "https://reactnativereusables.com/r/new-york/card.json"
+  ],
+  "files": [
+    {
+      "path": "./node_modules/@native-blocks/library/src/blocks/account-setup.tsx",
+      "content": "import { View } from \"react-native\";\r\n\r\n\r\n\r\nexport function AccountSetup() {\r\n    return (\r\n        <View className=\"gap-6\">\r\n            Account setup\r\n        </View>\r\n    )\r\n}",
+      "type": "registry:block"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+---
+title: Account Setup
+description:  .
+---
+
+import { AccountSetup } from '@docs/components/blocks';
+
+<ExternalLinks
+  links={[
+    
+  ]}
+/>
+
+<div className="h-5" />
+
+<div id="preview" className="scroll-m-20 *:hidden" aria-hidden>
+  ## Preview
+</div>
+
+<BlockPreviewCard
+  preview={
+    <div className="w-full max-w-sm">
+      <AccountSetup />
+    </div>
+  }
+/>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger id="cli" value="cli">CLI</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <CommandTabs args={["add", "https://native-blocks.vercel.app/r/account-setup.json"]}/>
+  </TabsContent>
+</Tabs>
+
+### Usage
+
+```tsx
+import { AccountSetup } from '@/blocks/account-setup';
+
+<AccountSetup />;
+```

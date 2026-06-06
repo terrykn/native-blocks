@@ -16,7 +16,7 @@ This is a template for creating a custom registry using Next.js or Expo.
 
 ## Documentation
 
-Visit https://rnr-registry-template-docs.vercel.app/ to view the documentation.
+Visit https://native-blocks.vercel.app/ to view the documentation.
 
 ## Community Resources
 

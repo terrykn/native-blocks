@@ -1,1 +1,1 @@
-export * from './multiple-buttons';
+export * from './account-setup';

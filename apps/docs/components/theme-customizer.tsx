@@ -213,11 +213,7 @@ export function ThemeCustomizerControls({ className }: { className?: string }) {
     <div className={cn('bg-fd-card rounded-lg border p-5', className)}>
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-base font-semibold">Theme Customizer</h3>
-          <span className="bg-fd-secondary text-fd-secondary-foreground inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide">
-            {mode === 'dark' ? <Moon className="size-3" /> : <Sun className="size-3" />}
-            {mode}
-          </span>
+          <h4 className="text-lg font-semibold leading-none">Theme Customizer</h4>
         </div>
         <button
           type="button"
@@ -229,13 +225,16 @@ export function ThemeCustomizerControls({ className }: { className?: string }) {
         </button>
       </div>
 
-      <p className="text-fd-muted-foreground mb-2 text-xs">
-        You are editing the <span className="font-semibold">{mode}</span> palette. Toggle the
-        site&apos;s color scheme to edit the other one.
+      <p className="text-fd-muted-foreground mb-1 text-xs">
+        You are editing the <span className="font-semibold">{mode}</span>{" "}palette. Toggle the
+        site&apos;s color scheme to switch.
+      </p>
+            <p className="text-fd-muted-foreground mb-2 text-xs">
+        Editing Primary or Background re-derives the palette.
       </p>
 
       {/* measurements — one per row */}
-      <div className="divide-fd-border divide-y">
+      <div className="divide-fd-border divide-y mb-4">
         <SliderRow
           label="Roundedness"
           value={theme.radius}
@@ -265,13 +264,7 @@ export function ThemeCustomizerControls({ className }: { className?: string }) {
       </div>
 
       {/* base colors */}
-      <p className="text-fd-muted-foreground mb-1 mt-5 text-xs font-medium uppercase tracking-wide">
-        Colors ({mode})
-      </p>
-      <p className="text-fd-muted-foreground mb-1 text-xs">
-        Editing Primary or Background re-derives the full {mode} palette.
-      </p>
-      <div className="divide-fd-border divide-y">
+      <div className="divide-fd-border divide-y mb-4">
         {BASE_TOKENS.map((token) => {
           const isBase = token === 'primary' || token === 'background';
           return (
@@ -289,10 +282,6 @@ export function ThemeCustomizerControls({ className }: { className?: string }) {
         })}
       </div>
 
-      {/* chart colors */}
-      <p className="text-fd-muted-foreground mb-1 mt-5 text-xs font-medium uppercase tracking-wide">
-        Chart colors ({mode})
-      </p>
       <div className="divide-fd-border divide-y">
         {CHART_TOKENS.map((token) => (
           <ColorRow
