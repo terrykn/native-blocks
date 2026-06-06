@@ -13,7 +13,7 @@
   "files": [
     {
       "path": "./node_modules/@native-blocks/library/src/blocks/account-setup.tsx",
-      "content": "import { View } from \"react-native\";\r\n\r\n\r\n\r\nexport function AccountSetup() {\r\n    return (\r\n        <View className=\"gap-6\">\r\n            Account setup\r\n        </View>\r\n    )\r\n}",
+      "content": "import { View } from \"react-native\";\r\n\r\n\r\n\r\nexport function AccountSetup() {\r\n    return (\r\n        <View className=\"gap-6\">\r\n            \r\n        </View>\r\n    )\r\n}",
       "type": "registry:block"
     }
   ]

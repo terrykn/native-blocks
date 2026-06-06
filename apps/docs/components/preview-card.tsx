@@ -1,6 +1,6 @@
 'use client';
 
-import { RnrIcon } from '@docs/components/icons/rnr-icon';
+import { NbIcon } from '@docs/components/icons/nb-icon';
 import { PlatformSelect, usePlatform } from '@docs/components/platform-select';
 import { ThemePreview } from '@docs/components/theme-preview';
 import { useParams } from 'next/navigation';
@@ -49,7 +49,7 @@ export function PreviewCard({ preview }: PreviewCardProps) {
         target="_blank"
         className="not-prose bg-primary text-primary-foreground focus-visible:border-ring focus-visible:ring-ring/50 mt-4 inline-flex w-full shrink-0 items-center gap-2.5 rounded-lg p-2.5 text-sm font-medium shadow-sm outline-none transition-all focus-visible:ring-[3px] sm:hidden dark:p-2 [&_svg]:shrink-0">
         <div className="bg-primary flex items-center justify-center rounded-lg p-1 shadow-md dark:bg-black dark:p-2">
-          <RnrIcon className="size-11 text-white dark:size-10" pathClassName="stroke-1" />
+          <NbIcon className="size-11 text-white dark:size-10" pathClassName="stroke-1" />
         </div>
         <div className="flex flex-col gap-1">
           <p className="leading-none">Tap to preview in the app</p>

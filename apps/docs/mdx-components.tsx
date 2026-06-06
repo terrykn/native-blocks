@@ -1,5 +1,6 @@
 import { BashCommand } from '@docs/components/bash-command';
 import { BlocksGrid } from '@docs/components/blocks-grid';
+import { ReusablesGrid } from './components/reusables-grid';
 import { CommandTabs } from '@docs/components/command-tabs';
 import { ExternalLinks } from '@docs/components/external-links';
 import { BlockPreviewCard, PreviewCard } from '@docs/components/preview-card';
@@ -33,6 +34,7 @@ const mdxComponents: MDXComponents = {
     <h3 className={cn(className, 'mb-6 mt-10 scroll-mt-20 font-medium')} {...props} />
   ),
   BlocksGrid,
+  ReusablesGrid,
   BlockPreviewCard,
   CommandTabs,
   ExternalLinks,

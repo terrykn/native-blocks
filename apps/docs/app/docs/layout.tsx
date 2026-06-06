@@ -1,4 +1,4 @@
-import { RnrIcon } from '@docs/components/icons/rnr-icon';
+import { NbIcon } from '@docs/components/icons/nb-icon';
 import { SkipNavigationButton } from '@docs/components/skip-navigation-button';
 import { ThemeCustomizerButton } from '@docs/components/theme-customizer-button';
 import { source } from '@docs/lib/source';
@@ -17,9 +17,9 @@ export default function Layout({ children }: { children: ReactNode }) {
           title: (
             <div className="text-foreground/80 -ml-px flex items-center gap-1.5 opacity-90 transition-opacity duration-200 hover:opacity-100">
               <div className="flex items-center justify-center">
-                <RnrIcon />
+                <NbIcon />
               </div>
-              <p className="text-base">Registry Template</p>
+              <p className="text-base">Native Blocks</p>
             </div>
           ),
         }}

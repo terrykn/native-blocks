@@ -4,21 +4,18 @@
   "homepage": "https://native-blocks.vercel.app/",
   "items": [
     {
-      "name": "example-component",
+      "name": "slider",
       "type": "registry:component",
-      "title": "Example Component",
-      "description": "Displays a button which is always red.",
-      "author": "@gabimoncha",
+      "title": "Slider",
+      "description": "An input where the user selects a value from a range of values.",
+      "author": "@terrykn",
       "files": [
         {
-          "path": "./node_modules/@native-blocks/library/src/components/ui/red-button.tsx",
+          "path": "./node_modules/@native-blocks/library/src/components/ui/slider.tsx",
           "type": "registry:component"
         }
       ],
-      "registryDependencies": [
-        "https://reactnativereusables.com/r/new-york/text.json",
-        "https://reactnativereusables.com/r/new-york/button.json"
-      ]
+      "registryDependencies": []
     },
     {
       "name": "account-setup",

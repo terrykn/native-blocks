@@ -1,4 +1,4 @@
-import { RnrIcon } from '@docs/components/icons/rnr-icon';
+import { NbIcon } from '@docs/components/icons/nb-icon';
 import { SkipNavigationButton } from '@docs/components/skip-navigation-button';
 import { Button } from '@docs/components/ui/button';
 import { HomeLayout } from 'fumadocs-ui/layouts/home';
@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         nav={{
           title: (
             <div className="hover:bg-fd-accent -ml-0.5 flex size-8 items-center justify-center rounded-md transition-colors duration-200">
-              <RnrIcon className="w-6" pathClassName="stroke-[1px]" />
+              <NbIcon className="w-6" pathClassName="stroke-[1px]" />
             </div>
           ),
         }}

@@ -76,6 +76,8 @@ export default function BlockNameScreen() {
 
 7. Add the block to COMPONENTS array in apps/showcase/lib/constants.ts with slug "block-name", name: "Block Name"
 
+8. pnpm registry, pnpm build
+
 ### Steps for adding a new component (fill in the placeholders)
 1. Create the source code for ComponentName in packages/library/src/components/ui/component-name.tsx then export it in packages/library/src/components/ui/index.ts
 2. Create the example code in packages/library/src/examples/component-name/component-name-variant.tsx with as many examples as we require to demonstrate the different variants of this component (if exists) using the name ComponentNameVariantPreview then export in packages/library/src/examples/component-name/index.ts.
@@ -96,3 +98,5 @@ export default function ComponentNameScreen() {
 ```
 
 6. Add the component to COMPONENTS array in apps/showcase/lib/constants.ts with slug "component-name", name: "Component Name"
+
+7. pnpm registry, pnpm build

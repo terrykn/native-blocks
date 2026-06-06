@@ -5,7 +5,7 @@ const BLOCKS = [{ title: 'Account Setup', href: '/docs/blocks/new-user/account-s
 
 export function BlocksGrid() {
   return (
-    <div className="not-prose sm:gird-cols-3 grid grid-cols-2 gap-4 xl:grid-cols-4">
+    <div className="not-prose sm:grid-cols-3 grid grid-cols-2 gap-4 xl:grid-cols-4">
       {BLOCKS.map((block) => (
         <Button
           asChild

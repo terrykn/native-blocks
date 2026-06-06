@@ -1,4 +1,4 @@
-import { RnrIcon } from '@docs/components/icons/rnr-icon';
+import { NbIcon } from '@docs/components/icons/nb-icon';
 
 export default async function Page() {
   return (
@@ -16,7 +16,7 @@ export default async function Page() {
         </div>
         <div className="flex items-center justify-center">
           <div className="border-border/0 dark:border-border flex items-center justify-center rounded-3xl border bg-black p-4 shadow-md md:rounded-[2.5rem] md:p-6">
-            <RnrIcon className="size-16 text-white md:size-32" pathClassName="stroke-1" />
+            <NbIcon className="size-16 text-white md:size-32" pathClassName="stroke-1" />
           </div>
         </div>
       </div>
