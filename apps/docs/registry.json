@@ -32,7 +32,8 @@
       "registryDependencies": [
         "https://reactnativereusables.com/r/new-york/text.json",
         "https://reactnativereusables.com/r/new-york/button.json",
-        "https://reactnativereusables.com/r/new-york/card.json"
+        "https://reactnativereusables.com/r/new-york/card.json",
+        "https://reactnativereusables.com/r/new-york/progress.json"
       ]
     }
   ]

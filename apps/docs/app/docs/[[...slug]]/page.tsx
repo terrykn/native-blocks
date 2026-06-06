@@ -95,43 +95,43 @@ function Footer({ url }: { url: string }) {
           </Button>
         ) : null}
       </div>
-      <div className="flex h-20 items-center justify-between">
-        <div className="text-fd-muted-foreground w-full text-balance px-4 text-center text-xs leading-loose lg:text-sm">
-          Built by{' '}
-          <a
-            href="https://x.com/mrzachnugent"
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-4">
-            mrzachnugent
-          </a>{' '}
-          at{' '}
-          <a
-            href="https://foundedlabs.com"
-            target="_blank"
-            rel="noreferrer"
-            className="decoration-fd-muted-foreground/0 hover:decoration-fd-muted-foreground underline underline-offset-4">
-            Founded Labs
-          </a>
-          , bringing{' '}
-          <a
-            href="https://ui.shadcn.com"
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-4">
-            shadcn/ui
-          </a>{' '}
-          to React Native. Source on{' '}
-          <a
-            href="https://github.com/gabimoncha/rnr-registry-template"
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-4">
-            GitHub
-          </a>
-          .
-        </div>
-      </div>
+<div className="flex h-20 items-center justify-between">
+  <div className="text-fd-muted-foreground w-full text-balance px-4 text-center text-xs leading-loose lg:text-sm">
+    Created by{' '}
+    <a
+      href="https://terrykn.github.io"
+      target="_blank"
+      rel="noreferrer"
+      className="underline underline-offset-4 font-medium hover:text-foreground transition-colors">
+      Terry Nguyen
+    </a>
+    . Documentation template by{' '}
+    <a
+      href="https://github.com/gabimoncha"
+      target="_blank"
+      rel="noreferrer"
+      className="underline underline-offset-4 hover:text-foreground transition-colors">
+      gabimoncha
+    </a>
+    , based on{' '}
+    <a
+      href="https://reactnativereusables.com"
+      target="_blank"
+      rel="noreferrer"
+      className="underline underline-offset-4 hover:text-foreground transition-colors">
+      React Native Reusables
+    </a>{' '}
+    by{' '}
+    <a
+      href="https://x.com/mrzachnugent"
+      target="_blank"
+      rel="noreferrer"
+      className="underline underline-offset-4 hover:text-foreground transition-colors">
+      mrzachnugent
+    </a>
+    .
+  </div>
+</div>
     </footer>
   );
 }

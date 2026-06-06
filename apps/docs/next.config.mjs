@@ -1,6 +1,17 @@
 import { createMDX } from 'fumadocs-mdx/next';
+import { readFileSync } from 'fs';
+import { URL } from 'url';
 
 const withMDX = createMDX({});
+
+const packageJson = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url), 'utf-8')
+);
+
+const expoPackages = Object.keys({
+  ...packageJson.dependencies,
+  ...packageJson.devDependencies,
+}).filter((pkg) => pkg.startsWith('expo-') || pkg === 'expo');
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -22,6 +33,9 @@ const config = {
     'lucide-react-native',
     '@shopify/flash-list',
     '@rn-primitives',
+    'expo-haptics',
+    'expo-modules-core',
+    ...expoPackages
   ],
   typescript: {
     ignoreBuildErrors: true,

@@ -1,13 +1,15 @@
 ---
 title: Account Setup
-description:  .
+description: A declarative multi-step form builder with layout polymorphism for onboarding.
 ---
 
-import { AccountSetup } from '@docs/components/blocks';
+import { AccountSetupPreview } from '@docs/components/examples';
 
 <ExternalLinks
   links={[
-    
+    { title: 'Button Docs', url: 'https://reactnativereusables.com/docs/components/button/' },
+    { title: 'Card Docs', url: 'https://reactnativereusables.com/docs/components/card/' },
+    { title: 'Progress Docs', url: '/docs/components/progress' },
   ]}
 />
 
@@ -19,8 +21,8 @@ import { AccountSetup } from '@docs/components/blocks';
 
 <BlockPreviewCard
   preview={
-    <div className="w-full max-w-sm">
-      <AccountSetup />
+    <div className="w-full max-w-sm h-[600px] border border-border rounded-3xl overflow-hidden shadow-2xl">
+      <AccountSetupPreview />
     </div>
   }
 />
@@ -38,9 +40,12 @@ import { AccountSetup } from '@docs/components/blocks';
   <TabsContent value="manual">
     <Steps> 
       <Step>
-        **If missing, add the following component:**
+        **If missing, add the following components:**
 
-        - [`Button`](/docs/components/example-component)
+        - [`Button`](https://reactnativereusables.com/docs/components/button)
+        - [`Card`](https://reactnativereusables.com/docs/components/card)
+        - [`Progress`](https://reactnativereusables.com/docs/components/progress)
+        - [`Text`](https://reactnativereusables.com/docs/components/text)
 
       </Step>
 
@@ -72,14 +77,42 @@ import { AccountSetup } from '@docs/components/blocks';
 ### Usage
 
 ```tsx
-import { View } from 'react-native';
-import { AccountSetup } from '@/blocks/account-setup';
+import { AccountSetup } from '@/components/blocks/account-setup';
 
-export default function AccountSetupScreen() {
-    return (
-        <View>
-            <AccountSetup />;
-        </View>
-    )
+export default function OnboardingScreen() {
+  const handleFinalSubmit = (data: any) => {
+    console.log('Onboarding data:', data);
+  };
+
+  return (
+    <AccountSetup.Root totalSteps={3} onSubmit={handleFinalSubmit}>
+      <AccountSetup.Header 
+        title="Welcome" 
+        description="Let's tailor your profile" 
+      />
+      
+      <AccountSetup.Content>
+        <AccountSetup.Step 
+          index={0} 
+          layoutType="grid" 
+          options={OPTIONS_STEP_1} 
+        />
+        <AccountSetup.Step 
+          index={1} 
+          layoutType="list" 
+          options={OPTIONS_STEP_2} 
+        />
+        <AccountSetup.Step 
+          index={2} 
+          layoutType="chips" 
+          options={OPTIONS_STEP_3} 
+          multiple 
+        />
+      </AccountSetup.Content>
+      
+      <AccountSetup.Footer />
+    </AccountSetup.Root>
+  );
 }
 ```
+

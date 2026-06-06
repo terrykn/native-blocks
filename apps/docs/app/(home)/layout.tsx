@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 size="sm"
                 asChild
                 className="hover:bg-fd-accent dark:hover:bg-fd-accent -ml-1.5 justify-start sm:ml-0 sm:justify-center">
-                <Link href="/docs/components/example-component">Components</Link>
+                <Link href="/docs/components/reusables">Components</Link>
               </Button>
             ),
           },
