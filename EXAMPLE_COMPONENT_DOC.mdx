@@ -1,10 +1,10 @@
 
 ---
-title: Block Name
-description: An example block to use as reference for creating other blocks.
+title: Component Name
+description: An example component to use as reference for creating other components.
 ---
 
-import { BlockNameVariantPreview } from '@docs/components/examples';
+import { ComponentNameVariantPreview } from '@docs/components/example';
 
 (Used to link any referenced external or Reusables components mentioned in any of the steps below.)
 <ExternalLinks
@@ -19,10 +19,10 @@ import { BlockNameVariantPreview } from '@docs/components/examples';
   ## Preview
 </div>
 
-<BlockPreviewCard
+<ComponentPreviewCard
   preview={
     <div className="w-full max-w-sm">
-      <BlockNameVariantPreview />
+      <ComponentNameVariantPreview />
     </div>
   }
 />
@@ -35,41 +35,41 @@ import { BlockNameVariantPreview } from '@docs/components/examples';
     <TabsTrigger id="manual" value="manual">Manual</TabsTrigger>
   </TabsList>
   <TabsContent value="cli">
-    <CommandTabs args={["add", "block-name"]}/>
+    <CommandTabs args={["add", "component-name"]}/>
   </TabsContent>
   <TabsContent value="manual">
     <Steps> 
-    (list out any components from the library and/or from Reusables used in the block, and provide a documentation link)
+    (list out any components from the library and/or from Reusables used in the component, and provide a documentation link)
       <Step>
         **If missing, add the following component:**
 
-        - [`Button`](/docs/components/example-component)
+        - [`SomeComponent`](/docs/components/some-component)
 
-        - [`Card`](https://reactnativereusables.com/docs/components/card)
+        - [`SomeReusablesComponent`](https://reactnativereusables.com/docs/components/some-reusables-component)
 
       </Step>
 
-    (provide the block code, and any other blocks that come along that this block depends on, if exists)
+    (provide the component code, and any other components that come along that this component depends on, if exists)
       <Step>
 
         **Copy and paste the following code into your project.**
 
         ```json doc-gen:file
         {
-          "file": "./node_modules/@native-blocks/library/src/components/ui/component-name.tsx",
-          "codeblock": {
+          "file": "./node_modules/@native-components/library/src/components/ui/some-component-name.tsx",
+          "codecomponent": {
             "lang": "tsx",
-            "meta": "title=\"@/components/ui/component-name.tsx\""
+            "meta": "title=\"@/components/ui/some-component-name.tsx\""
           }
         }
         ```
 
         ```json doc-gen:file
         {
-          "file": "./node_modules/@native-blocks/library/src/blocks/block-name.tsx",
-          "codeblock": {
+          "file": "./node_modules/@native-components/library/src/components/ui/component-name.tsx",
+          "codecomponent": {
             "lang": "tsx",
-            "meta": "title=\"@/components/blocks/block-name.tsx\""
+            "meta": "title=\"@/components/ui/component-name.tsx\""
           }
         }
         ```
@@ -91,7 +91,7 @@ import { BlockNameVariantPreview } from '@docs/components/examples';
 (just to show how to export and use it)
 
 ```tsx
-import { BlockName } from '@/blocks/block-name';
+import { ComponentName } from '@/components/ui/component-name';
 
-<BlockName />;
+<ComponentName />;
 ```

@@ -55,8 +55,44 @@ The goal is to provide production-ready, copy-paste React Native components and 
 - `cd packages/cli` and `npm publish --access public` to update the CLI
 
 ### Steps for adding a new block (fill in the placeholders)
-1. Create the source code in packages/library/src/blocks/block-name.tsx
-2. Export it in packages/library/src/blocks/index.ts
-3. Add it to apps/showcase/registry.json and apps/docs/registry.json (both should be identical), with name "block-name", type "registry:block", title "Block Name", description (use a concise desc), author "@terrykn", files with path "./node_modules/@native-blocks/library/src/blocks/block-name.tsx" and type "registry:block", and registryDependencies with array of any React Native Reusables dependencies used in the block, with https://reactnativereusables.com/r/new-york/component-name.json
+1. Create the source code in packages/library/src/blocks/block-name.tsx then export it in packages/library/src/blocks/index.ts
+2. Create the example code in packages/library/src/examples/block-name/block-name-variant.tsx with as many examples as we require to demonstrate the different variants of this block (if exists) using the name BlockNameVariantPreview then export in packages/library/src/examples/block-name/index.ts.
+3. Add it to apps/showcase/registry.json and apps/docs/registry.json (both should be identical), with name "block-name", type "registry:block", title "Block Name", description (use a concise desc), author "@terrykn", files with path "./node_modules/@native-blocks/library/src/blocks/block-name.tsx" and type "registry:block", and registryDependencies with array of any React Native Reusables dependencies used in the block, with https://reactnativereusables.com/r/new-york/used-component-name.json
 4. Create apps/docs/content/docs/blocks/[use appropriate block category]/block-name.mdx following the structure from EXAMPLE_BLOCK_DOC.mdx
-5. Add the object to BLOCKS array with title "Block Name" and href "/docs/blocks/[block category]/block-name"
+5. Add the object to BLOCKS array inside apps/docs/components/blocks-grid.tsx with title "Block Name" and href "/docs/blocks/[block category]/block-name"
+6. Add the example preview(s) to apps/showcase/app/components/block-name.tsx importing BlockNameVariantPreview from @/library/examples/block-name using the following structure:
+
+```
+import { PreviewCarousel } from '@showcase/components/preview-carousel';
+import * as React from 'react';
+import { BlockNameVariantPreview } from '@/library/examples/block-name';
+
+const blockNamePreviews = [ { name: 'Variant', component: BlockNameVariantPreview }, { ... }, ... ] 
+
+export default function BlockNameScreen() {
+  return <PreviewCarousel previews={blockNamePreviews} />
+}
+```
+
+7. Add the block to COMPONENTS array in apps/showcase/lib/constants.ts with slug "block-name", name: "Block Name"
+
+### Steps for adding a new component (fill in the placeholders)
+1. Create the source code for ComponentName in packages/library/src/components/ui/component-name.tsx then export it in packages/library/src/components/ui/index.ts
+2. Create the example code in packages/library/src/examples/component-name/component-name-variant.tsx with as many examples as we require to demonstrate the different variants of this component (if exists) using the name ComponentNameVariantPreview then export in packages/library/src/examples/component-name/index.ts.
+3. Add it to apps/showcase/registry.json and apps/docs/registry.json (both should be identical), with name "component-name", type "registry:component", title "Component Name", description (use a concise desc), author "@terrykn", files with path "./node_modules/@native-components/library/src/components/ui/component-name.tsx" and type "registry:component", and registryDependencies with array of any React Native Reusables dependencies used in the component, with https://reactnativereusables.com/r/new-york/used-component-name.json
+4. Create apps/docs/content/docs/components/component-name.mdx following the structure from EXAMPLE_COMPONENT_DOC.mdx
+5. Add the example preview(s) to apps/showcase/app/components/component-name.tsx importing ComponentNameVariantPreview from @/library/examples/component-name using the following structure:
+
+```
+import { PreviewCarousel } from '@showcase/components/preview-carousel';
+import * as React from 'react';
+import { ComponentNameVariantPreview } from '@/library/examples/component-name';
+
+const ComponentNamePreviews = [ { name: 'Variant', component: ComponentNameVariantPreview }, { ... }, ... ] 
+
+export default function ComponentNameScreen() {
+  return <PreviewCarousel previews={ComponentNamePreviews} />
+}
+```
+
+6. Add the component to COMPONENTS array in apps/showcase/lib/constants.ts with slug "component-name", name: "Component Name"
