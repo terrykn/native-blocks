@@ -53,3 +53,10 @@ The goal is to provide production-ready, copy-paste React Native components and 
 - `pnpm turbo build` to check the builds
 - `pnpm registry` to create the public/r files in docs and showcase
 - `cd packages/cli` and `npm publish --access public` to update the CLI
+
+### Steps for adding a new block (fill in the placeholders)
+1. Create the source code in packages/library/src/blocks/block-name.tsx
+2. Export it in packages/library/src/blocks/index.ts
+3. Add it to apps/showcase/registry.json and apps/docs/registry.json (both should be identical), with name "block-name", type "registry:block", title "Block Name", description (use a concise desc), author "@terrykn", files with path "./node_modules/@native-blocks/library/src/blocks/block-name.tsx" and type "registry:block", and registryDependencies with array of any React Native Reusables dependencies used in the block, with https://reactnativereusables.com/r/new-york/component-name.json
+4. Create apps/docs/content/docs/blocks/[use appropriate block category]/block-name.mdx following the structure from EXAMPLE_BLOCK_DOC.mdx
+5. Add the object to BLOCKS array with title "Block Name" and href "/docs/blocks/[block category]/block-name"

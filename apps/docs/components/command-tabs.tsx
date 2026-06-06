@@ -19,7 +19,7 @@ export function CommandTabs({ args }: { args: string[] }) {
             <CodeBlock>
               <Pre>
                 <code>
-                  {[...COMMAND[manager], '@react-native-reusables/cli@latest', ...args].join(' ')}
+                  {[...COMMAND[manager], 'native-blocks', ...args].join(' ')}
                 </code>
               </Pre>
             </CodeBlock>

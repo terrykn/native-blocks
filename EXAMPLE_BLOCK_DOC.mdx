@@ -1,0 +1,104 @@
+
+---
+title: Block Name
+description: An example block to use as reference for creating other blocks.
+---
+
+import { BlockName } from '@docs/components/blocks';
+
+(Used to link any referenced external or Reusables components mentioned in any of the steps below.)
+<ExternalLinks
+  links={[
+    { title: 'Button Docs', url: 'https://reactnativereusables.com/docs/components/button/' },
+  ]}
+/>
+
+<div className="h-5" />
+
+<div id="preview" className="scroll-m-20 *:hidden" aria-hidden>
+  ## Preview
+</div>
+
+<BlockPreviewCard
+  preview={
+    <div className="w-full max-w-sm">
+      <BlockName />
+    </div>
+  }
+/>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger id="cli" value="cli">CLI</TabsTrigger>
+    <TabsTrigger id="manual" value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <CommandTabs args={["add", "block-name"]}/>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps> 
+    (list out any components from the library and/or from Reusables used in the block, and provide a documentation link)
+      <Step>
+        **If missing, add the following component:**
+
+        - [`Button`](/docs/components/example-component)
+
+        - [`Card`](https://reactnativereusables.com/docs/components/card)
+
+      </Step>
+
+    (provide the block code, and any other blocks that come along that this block depends on, if exists)
+      <Step>
+
+        **Copy and paste the following code into your project.**
+
+        ```json doc-gen:file
+        {
+          "file": "./node_modules/@native-blocks/library/src/blocks/block-name.tsx",
+          "codeblock": {
+            "lang": "tsx",
+            "meta": "title=\"@/components/blocks/block-name.tsx\""
+          }
+        }
+        ```
+
+        ```json doc-gen:file
+        {
+          "file": "./node_modules/@native-blocks/library/src/blocks/another-block-name.tsx",
+          "codeblock": {
+            "lang": "tsx",
+            "meta": "title=\"@/components/blocks/another-block-name.tsx\""
+          }
+        }
+        ```
+
+      </Step>
+
+      <Step>
+
+        **Update the import paths to match your project setup.**
+
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+### Usage
+
+
+(show a reasonable, minimal usage of the block, providing simple styling)
+
+```tsx
+import { View } from 'react-native';
+import { BlockName } from '@/blocks/block-name';
+
+export default function BlockNameScreen() {
+    return (
+        <View>
+            <BlockName />;
+        </View>
+    )
+}
+```

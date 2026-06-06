@@ -51,7 +51,7 @@ return (
     {open ? (
       <div className="bg-fd-popover border-fd-border fixed inset-x-4 top-16 z-[9999] max-h-[75vh] overflow-y-auto rounded-lg border shadow-lg sm:inset-x-auto sm:right-4 sm:top-[7rem] sm:w-[380px]">
         <div className="bg-fd-popover sticky top-0 z-10 flex items-center justify-between border-b px-4 py-2">
-          <p className="text-sm font-medium">Theme</p>
+          <p className="text-sm font-medium"></p>
           <button
             type="button"
             onClick={() => setOpen(false)}

@@ -127,7 +127,7 @@ export function PreviewSurface() {
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           <button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-4 py-2 text-sm font-medium shadow transition-colors">
             Primary
           </button>
@@ -227,10 +227,7 @@ export function ThemeCustomizerControls({ className }: { className?: string }) {
 
       <p className="text-fd-muted-foreground mb-1 text-xs">
         You are editing the <span className="font-semibold">{mode}</span>{" "}palette. Toggle the
-        site&apos;s color scheme to switch.
-      </p>
-            <p className="text-fd-muted-foreground mb-2 text-xs">
-        Editing Primary or Background re-derives the palette.
+        site&apos;s color scheme to switch. Editing Primary or Background re-derives the palette.
       </p>
 
       {/* measurements — one per row */}
@@ -308,9 +305,9 @@ export function ThemeCustomizerControls({ className }: { className?: string }) {
           />
         </div>
         <p className="text-fd-muted-foreground text-xs">
-          Exports both light and dark palettes. Paste into{' '}
-          <code className="font-mono">packages/library/reusables/global.css</code> and{' '}
-          <code className="font-mono">packages/library/reusables/lib/theme.ts</code>
+          Paste into your{' '}
+          <code className="font-mono">global.css</code> and{' '}
+          <code className="font-mono">theme.ts</code>{' '}files.
         </p>
       </div>
     </div>
