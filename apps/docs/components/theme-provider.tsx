@@ -365,8 +365,7 @@ export function generateThemeTs(theme: ThemeState): string {
             ringIdx + 1,
             0,
             `    radius: '${pxToRem(theme.radius)}',`,
-            `    borderWidth: '${theme.borderWidth}px',`,
-            `    shadowOpacity: ${theme.shadowOpacity},`
+            `    borderWidth: '${theme.borderWidth}px',`
         );
         return lines.join('\n');
     };
