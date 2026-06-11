@@ -154,7 +154,7 @@ interface StepProps {
 
 function Step({ index, layoutType, options = [], multiple = false }: StepProps) {
     const { formData, updateFormData, setCanGoNext } = useAccountSetup();
-    
+
     const selectedValues = multiple
         ? (formData[index] ?? []) as string[]
         : (formData[index] ?? '') as string;
@@ -255,7 +255,7 @@ function Step({ index, layoutType, options = [], multiple = false }: StepProps) 
                         >
                             <Text
                                 className={cn(
-                                     'text-sm font-medium',
+                                    'text-sm font-medium',
                                     isSelected(option.id) ? 'text-primary-foreground' : 'text-foreground'
                                 )}
                             >
@@ -304,7 +304,6 @@ function Footer({
     );
 }
 
-// ─── Export ───────────────────────────────────────────────────────────────────
 export const AccountSetup = {
     Root,
     Header,
