@@ -6,3 +6,52 @@ description: Customize the design tokens used by every block and component in th
 <ThemePreview>
   <ThemeCustomizer />
 </ThemePreview>
+
+## How it works
+
+The theme customizer generates design tokens as CSS variables. To make these work in your project, you need to configure Tailwind to use these variables for roundedness, borders, and shadows.
+
+### Tailwind Configuration
+
+Update your `tailwind.config.js` to extend the theme with these variables:
+
+```js title="tailwind.config.js"
+const { hairlineWidth } = require('nativewind/theme');
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  
+  // your other exports
+
+  theme: {
+    extend: {
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+      },
+      borderWidth: {
+        DEFAULT: 'var(--border-width)',
+        hairline: hairlineWidth(),
+      },
+      boxShadow: {
+        sm: '0 1px 3px var(--shadow-sm)',
+        DEFAULT: '0 2px 8px var(--shadow-md)',
+        md: '0 4px 12px var(--shadow-md)',
+        lg: '0 8px 20px var(--shadow-lg)',
+        xl: '0 12px 30px var(--shadow-xl)',
+        '2xl': '0 15px 50px var(--shadow-2xl)',
+        none: 'none',
+      },
+    },
+  },
+};
+```
+
+### Global CSS
+
+Paste the generated CSS into your `global.css` file. This defines the default values for the variables used by Tailwind.
+
+### Theme.ts
+
+If you use the `THEME` object for React Navigation or manual styling, ensure your `lib/theme.ts` matches the generated output to include properties like `radius`, `borderWidth`, and `shadowOpacity`.

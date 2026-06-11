@@ -99,16 +99,14 @@ const config = {
       borderWidth: {
         DEFAULT: 'var(--border-width, 1px)',
       },
-      // Shadows scale with --shadow-intensity inside ThemePreview's scope.
-      // Fallbacks mirror Tailwind's default shadow opacities.
+      // Shadows scale with the Theme Customizer inside ThemePreview's scope.
       boxShadow: {
-        sm: '0 1px 2px 0 hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.05))',
-        DEFAULT:
-          '0 1px 3px 0 hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1)), 0 1px 2px -1px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1))',
-        md: '0 4px 6px -1px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1)), 0 2px 4px -2px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1))',
-        lg: '0 10px 15px -3px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1)), 0 4px 6px -4px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1))',
-        xl: '0 20px 25px -5px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1)), 0 8px 10px -6px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.1))',
-        '2xl': '0 25px 50px -12px hsl(var(--shadow-color, 0 0% 0%) / var(--shadow-intensity, 0.25))',
+        sm: '0 1px 3px var(--shadow-sm, rgba(0, 0, 0, 0.05))',
+        DEFAULT: '0 2px 8px var(--shadow-md, rgba(0, 0, 0, 0.1))',
+        md: '0 4px 12px var(--shadow-md, rgba(0, 0, 0, 0.1))',
+        lg: '0 8px 20px var(--shadow-lg, rgba(0, 0, 0, 0.1))',
+        xl: '0 12px 30px var(--shadow-xl, rgba(0, 0, 0, 0.1))',
+        '2xl': '0 15px 50px var(--shadow-2xl, rgba(0, 0, 0, 0.25))',
         none: 'none',
       },
     },

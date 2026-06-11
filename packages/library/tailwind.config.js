@@ -48,7 +48,21 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       borderWidth: {
+        DEFAULT: 'var(--border-width)',
         hairline: hairlineWidth(),
+        0: '0',
+        2: '2px',
+        4: '4px',
+        8: '8px',
+      },
+      boxShadow: {
+        sm: '0 1px 3px var(--shadow-sm)',
+        DEFAULT: '0 2px 8px var(--shadow-md)',
+        md: '0 4px 12px var(--shadow-md)',
+        lg: '0 8px 20px var(--shadow-lg)',
+        xl: '0 12px 30px var(--shadow-xl)',
+        '2xl': '0 15px 50px var(--shadow-2xl)',
+        none: 'none',
       },
       keyframes: {
         'accordion-down': {

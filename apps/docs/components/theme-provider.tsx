@@ -82,9 +82,10 @@ const STORAGE_KEY = 'docs-theme-customizer-v2';
 /* ---------------------------------- helpers --------------------------------- */
 
 const clamp = (v: number, min = 0, max = 100) => Math.min(max, Math.max(min, v));
-const round = (v: number) => Math.round(v * 10) / 10;
+const round = (v: number) => Math.round(v * 100) / 100;
+const pxToRem = (px: number) => (px === 0 ? '0' : `${round(px / 16)}rem`);
 
-export const formatHsl = ({ h, s, l }: HSL) => `${round(h)} ${round(s)}% ${round(l)}%`;
+export const formatHsl = ({ h, s, l }: HSL) => `${Math.round(h * 10) / 10} ${Math.round(s * 10) / 10}% ${Math.round(l * 10) / 10}%`;
 
 export function hslToHex({ h, s, l }: HSL): string {
     const s1 = s / 100;
@@ -278,10 +279,25 @@ export function themeToCssVars(t: ThemeState, mode: Mode): Record<string, string
     const palette = t.colors[mode];
     const vars: Record<string, string> = {};
     for (const k of COLOR_TOKENS) vars[`--${k}`] = formatHsl(palette[k]);
-    vars['--radius'] = `${t.radius}px`;
+    vars['--radius'] = pxToRem(t.radius);
     vars['--border-width'] = `${t.borderWidth}px`;
-    vars['--shadow-intensity'] = `${t.shadowOpacity}`;
-    vars['--shadow-color'] = mode === 'dark' ? '0 0% 0%' : '0 0% 0%';
+
+    const isDark = mode === 'dark';
+    const s = t.shadowOpacity;
+    if (isDark) {
+        vars['--shadow-sm'] = `rgba(0, 0, 0, ${round(s * 2.5)})`;
+        vars['--shadow-md'] = `rgba(0, 0, 0, ${round(s * 3.5)})`;
+        vars['--shadow-lg'] = `rgba(0, 0, 0, ${round(s * 4.5)})`;
+        vars['--shadow-xl'] = `rgba(0, 0, 0, ${round(s * 5.5)})`;
+        vars['--shadow-2xl'] = `rgba(0, 0, 0, ${round(s * 6.5)})`;
+    } else {
+        vars['--shadow-sm'] = `rgba(0, 0, 0, ${round(s * 0.5)})`;
+        vars['--shadow-md'] = `rgba(0, 0, 0, ${round(s * 0.8)})`;
+        vars['--shadow-lg'] = `rgba(0, 0, 0, ${round(s * 1.2)})`;
+        vars['--shadow-xl'] = `rgba(0, 0, 0, ${round(s * 1.6)})`;
+        vars['--shadow-2xl'] = `rgba(0, 0, 0, ${round(s * 2.0)})`;
+    }
+
     return vars;
 }
 
@@ -289,15 +305,34 @@ export function themeToCssVars(t: ThemeState, mode: Mode): Record<string, string
 
 /** Generates the full `packages/library/reusables/global.css` file from both palettes. */
 export function generateGlobalCss(theme: ThemeState): string {
-    const block = (colors: ColorMap, indent = '    ') => {
+    const block = (colors: ColorMap, mode: Mode, indent = '    ') => {
         const lines = COLOR_TOKENS.map((k) => `${indent}--${k}: ${formatHsl(colors[k])};`);
         const ringIdx = lines.findIndex((l) => l.includes('--ring:'));
+
+        const isDark = mode === 'dark';
+        const s = theme.shadowOpacity;
+        const shadowLines = isDark
+            ? [
+                  `${indent}--shadow-sm: rgba(0, 0, 0, ${round(s * 2.5)});`,
+                  `${indent}--shadow-md: rgba(0, 0, 0, ${round(s * 3.5)});`,
+                  `${indent}--shadow-lg: rgba(0, 0, 0, ${round(s * 4.5)});`,
+                  `${indent}--shadow-xl: rgba(0, 0, 0, ${round(s * 5.5)});`,
+                  `${indent}--shadow-2xl: rgba(0, 0, 0, ${round(s * 6.5)});`,
+              ]
+            : [
+                  `${indent}--shadow-sm: rgba(0, 0, 0, ${round(s * 0.5)});`,
+                  `${indent}--shadow-md: rgba(0, 0, 0, ${round(s * 0.8)});`,
+                  `${indent}--shadow-lg: rgba(0, 0, 0, ${round(s * 1.2)});`,
+                  `${indent}--shadow-xl: rgba(0, 0, 0, ${round(s * 1.6)});`,
+                  `${indent}--shadow-2xl: rgba(0, 0, 0, ${round(s * 2.0)});`,
+              ];
+
         lines.splice(
             ringIdx + 1,
             0,
-            `${indent}--radius: ${theme.radius}px;`,
+            `${indent}--radius: ${pxToRem(theme.radius)};`,
             `${indent}--border-width: ${theme.borderWidth}px;`,
-            `${indent}--shadow-intensity: ${theme.shadowOpacity};`
+            ...shadowLines
         );
         return lines.join('\n');
     };
@@ -308,11 +343,11 @@ export function generateGlobalCss(theme: ThemeState): string {
 
 @layer base {
   :root {
-${block(theme.colors.light)}
+${block(theme.colors.light, 'light')}
   }
 
   .dark:root {
-${block(theme.colors.dark)}
+${block(theme.colors.dark, 'dark')}
   }
 }
 `;
@@ -326,7 +361,13 @@ export function generateThemeTs(theme: ThemeState): string {
             return `    ${key}: 'hsl(${formatHsl(colors[k])})',`;
         });
         const ringIdx = lines.findIndex((l) => l.includes('ring:'));
-        lines.splice(ringIdx + 1, 0, `    radius: '${theme.radius}px',`);
+        lines.splice(
+            ringIdx + 1,
+            0,
+            `    radius: '${pxToRem(theme.radius)}',`,
+            `    borderWidth: '${theme.borderWidth}px',`,
+            `    shadowOpacity: ${theme.shadowOpacity},`
+        );
         return lines.join('\n');
     };
 

@@ -23,6 +23,12 @@
     --input: 0 0% 89.8%;
     --ring: 0 0% 63%;
     --radius: 0.625rem;
+    --border-width: 1px;
+    --shadow-sm: rgba(0, 0, 0, 0.05);
+    --shadow-md: rgba(0, 0, 0, 0.08);
+    --shadow-lg: rgba(0, 0, 0, 0.12);
+    --shadow-xl: rgba(0, 0, 0, 0.16);
+    --shadow-2xl: rgba(0, 0, 0, 0.2);
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -49,6 +55,13 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 300 0% 45%;
+    --radius: 0.625rem;
+    --border-width: 1px;
+    --shadow-sm: rgba(0, 0, 0, 0.25);
+    --shadow-md: rgba(0, 0, 0, 0.35);
+    --shadow-lg: rgba(0, 0, 0, 0.45);
+    --shadow-xl: rgba(0, 0, 0, 0.55);
+    --shadow-2xl: rgba(0, 0, 0, 0.65);
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
