@@ -2,33 +2,21 @@
 import * as React from 'react';
 import { Pressable, ScrollView, View, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
-import Animated, {
-    SlideInRight,
-    SlideOutLeft
-} from 'react-native-reanimated';
 import { Button } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
 import { Progress } from '~/components/ui/progress';
 import { Text } from '~/components/ui/text';
 import { cn } from '~/lib/utils';
-import { Camera, Music, Palette, Send, Video, Zap } from 'lucide-react-native';
 
 const triggerSelectionHaptic = () => {
-    if (Platform.OS !== 'web') {
-        Haptics.selectionAsync().catch(() => { });
-    }
+    if (Platform.OS !== 'web') Haptics.selectionAsync().catch(() => { });
 };
-
 const triggerSuccessHaptic = () => {
-    if (Platform.OS !== 'web') {
+    if (Platform.OS !== 'web')
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => { });
-    }
 };
-
 const triggerImpactHaptic = (style: Haptics.ImpactFeedbackStyle) => {
-    if (Platform.OS !== 'web') {
-        Haptics.impactAsync(style).catch(() => { });
-    }
+    if (Platform.OS !== 'web') Haptics.impactAsync(style).catch(() => { });
 };
 
 interface AccountSetupContextValue {
@@ -47,9 +35,7 @@ const AccountSetupContext = React.createContext<AccountSetupContextValue | null>
 
 function useAccountSetup() {
     const context = React.useContext(AccountSetupContext);
-    if (!context) {
-        throw new Error('AccountSetup components must be used within an AccountSetup.Root');
-    }
+    if (!context) throw new Error('AccountSetup components must be used within AccountSetup.Root');
     return context;
 }
 
@@ -68,6 +54,7 @@ function Root({ children, totalSteps, onSubmit, className }: RootProps) {
     const nextStep = React.useCallback(() => {
         if (currentStep < totalSteps - 1) {
             triggerSelectionHaptic();
+            setCanGoNext(false);
             setCurrentStep((prev) => prev + 1);
         } else {
             triggerSuccessHaptic();
@@ -78,6 +65,7 @@ function Root({ children, totalSteps, onSubmit, className }: RootProps) {
     const prevStep = React.useCallback(() => {
         if (currentStep > 0) {
             triggerSelectionHaptic();
+            setCanGoNext(false);
             setCurrentStep((prev) => prev - 1);
         }
     }, [currentStep]);
@@ -116,17 +104,13 @@ interface HeaderProps {
 
 function Header({ title, description, className }: HeaderProps) {
     const { currentStep, totalSteps } = useAccountSetup();
-    const progress = ((currentStep + 1) / totalSteps) * 100;
+    const progress = totalSteps > 0 ? ((currentStep + 1) / totalSteps) * 100 : 0;
     return (
         <View className={cn('px-6 pt-6 pb-4 gap-4', className)}>
             <View className="gap-1">
-                <Text variant="h3" className="text-2xl font-bold">
-                    {title}
-                </Text>
+                <Text variant="h3" className="text-2xl font-bold">{title}</Text>
                 {description && (
-                    <Text variant="muted" className="text-muted-foreground">
-                        {description}
-                    </Text>
+                    <Text variant="muted" className="text-muted-foreground">{description}</Text>
                 )}
             </View>
             <Progress value={progress} />
@@ -135,33 +119,19 @@ function Header({ title, description, className }: HeaderProps) {
 }
 
 interface ContentProps {
-    children: React.ReactNode;
+    steps: React.ReactNode[];
     className?: string;
 }
 
-function Content({ children, className }: ContentProps) {
+function Content({ steps = [], className }: ContentProps) {
     const { currentStep } = useAccountSetup();
-
-    let activeChild: React.ReactNode = null;
-    React.Children.forEach(children, (child) => {
-        if (
-            React.isValidElement<{ index: number }>(child) &&
-            child.props.index === currentStep
-        ) {
-            activeChild = child;
-        }
-    });
+    const activeStep = steps[currentStep] ?? null;
 
     return (
         <View className={cn('flex-1 px-6', className)}>
-            <Animated.View
-                key={currentStep}
-                entering={SlideInRight.duration(300)}
-                exiting={SlideOutLeft.duration(300)}
-                style={{ flex: 1 }}
-            >
-                {activeChild}
-            </Animated.View>
+            <View style={{ flex: 1 }}>
+                {activeStep}
+            </View>
         </View>
     );
 }
@@ -178,36 +148,37 @@ interface Option {
 interface StepProps {
     index: number;
     layoutType: LayoutType;
-    options: Option[];
+    options?: Option[];
     multiple?: boolean;
 }
 
-function Step({ index, layoutType, options, multiple = false }: StepProps) {
+function Step({ index, layoutType, options = [], multiple = false }: StepProps) {
     const { formData, updateFormData, setCanGoNext } = useAccountSetup();
-    const selectedValues = formData[index] || (multiple ? [] : null);
+    
+    const selectedValues = multiple
+        ? (formData[index] ?? []) as string[]
+        : (formData[index] ?? '') as string;
 
     React.useEffect(() => {
-        const hasValue = multiple ? (selectedValues as string[]).length > 0 : !!selectedValues;
+        const hasValue = multiple
+            ? (selectedValues as string[]).length > 0
+            : !!selectedValues;
         setCanGoNext(hasValue);
     }, [selectedValues, multiple, setCanGoNext]);
 
-    const isSelected = (id: string) => {
-        if (multiple) {
-            return (selectedValues as string[]).includes(id);
-        }
-        return selectedValues === id;
-    };
+    const isSelected = (id: string) =>
+        multiple
+            ? Array.isArray(selectedValues) && selectedValues.includes(id)
+            : selectedValues === id;
 
     const toggleOption = (id: string) => {
         triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light);
-        let newValue;
+        let newValue: string | string[];
         if (multiple) {
-            const current = selectedValues as string[];
-            if (current.includes(id)) {
-                newValue = current.filter((v) => v !== id);
-            } else {
-                newValue = [...current, id];
-            }
+            const current = Array.isArray(selectedValues) ? selectedValues : [];
+            newValue = current.includes(id)
+                ? current.filter((v) => v !== id)
+                : [...current, id];
         } else {
             newValue = id;
         }
@@ -257,9 +228,7 @@ function Step({ index, layoutType, options, multiple = false }: StepProps) {
                                     {option.label}
                                 </Text>
                                 {option.description && (
-                                    <Text variant="muted" className="text-xs">
-                                        {option.description}
-                                    </Text>
+                                    <Text variant="muted" className="text-xs">{option.description}</Text>
                                 )}
                             </View>
                         </Card>
@@ -286,7 +255,7 @@ function Step({ index, layoutType, options, multiple = false }: StepProps) {
                         >
                             <Text
                                 className={cn(
-                                    'text-sm font-medium',
+                                     'text-sm font-medium',
                                     isSelected(option.id) ? 'text-primary-foreground' : 'text-foreground'
                                 )}
                             >
@@ -313,19 +282,14 @@ function Footer({
     className,
     nextLabel = 'Next',
     backLabel = 'Back',
-    finishLabel = 'Finish'
+    finishLabel = 'Finish',
 }: FooterProps) {
     const { currentStep, totalSteps, canGoNext, nextStep, prevStep } = useAccountSetup();
     const isLastStep = currentStep === totalSteps - 1;
-
     return (
         <View className={cn('px-6 py-6 border-t border-border flex-row gap-4 bg-background', className)}>
             {currentStep > 0 && (
-                <Button
-                    variant="outline"
-                    className="flex-1 h-12"
-                    onPress={prevStep}
-                >
+                <Button variant="outline" className="flex-1 h-12" onPress={prevStep}>
                     <Text>{backLabel}</Text>
                 </Button>
             )}
@@ -340,6 +304,7 @@ function Footer({
     );
 }
 
+// ─── Export ───────────────────────────────────────────────────────────────────
 export const AccountSetup = {
     Root,
     Header,

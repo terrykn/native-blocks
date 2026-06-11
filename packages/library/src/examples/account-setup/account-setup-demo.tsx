@@ -46,30 +46,19 @@ export function AccountSetupPreview() {
   return (
     <View className="flex-1 w-full max-w-md h-[600px] overflow-hidden">
       <AccountSetup.Root totalSteps={3} onSubmit={handleFinalSubmit}>
-        <AccountSetup.Header 
-          title="Create Profile" 
-          description="Customize your experience to get started." 
+        <AccountSetup.Header
+          title="Create Profile"
+          description="Customize your experience to get started."
         />
-        
-        <AccountSetup.Content>
-          <AccountSetup.Step 
-            index={0} 
-            layoutType="grid" 
-            options={GRID_OPTIONS} 
-          />
-          <AccountSetup.Step 
-            index={1} 
-            layoutType="list" 
-            options={LIST_OPTIONS} 
-          />
-          <AccountSetup.Step 
-            index={2} 
-            layoutType="chips" 
-            options={CHIP_OPTIONS} 
-            multiple 
-          />
-        </AccountSetup.Content>
-        
+
+        <AccountSetup.Content
+          steps={[
+            <AccountSetup.Step index={0} layoutType="grid" options={GRID_OPTIONS} />,
+            <AccountSetup.Step index={1} layoutType="list" options={LIST_OPTIONS} />,
+            <AccountSetup.Step index={2} layoutType="chips" options={CHIP_OPTIONS} multiple />,
+          ]}
+        />
+
         <AccountSetup.Footer />
       </AccountSetup.Root>
     </View>
