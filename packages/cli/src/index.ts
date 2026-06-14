@@ -7,7 +7,7 @@ const program = new Command();
 
 program
     .name("native-blocks")
-    .description("Mobile-first React Native component registry")
+    .description("Mobile-first React Native component and block registry")
     .version("0.1.0");
 
 program

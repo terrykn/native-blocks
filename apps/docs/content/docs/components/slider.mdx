@@ -7,17 +7,36 @@ import { SliderPreview } from '@docs/components/examples';
 
 <div className="h-5" />
 
-<div id="preview" className="scroll-m-20 *:hidden" aria-hidden>
-  ## Preview
-</div>
-
-<PreviewCard
-  preview={
-    <div className="w-full max-w-sm">
-      <SliderPreview />
+<Tabs defaultValue="preview">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <div id="preview" className="scroll-m-20 *:hidden" aria-hidden>
+      ## Preview
     </div>
-  }
-/>
+
+    <PreviewCard
+      preview={
+        <div className="w-full max-w-sm">
+          <SliderPreview />
+        </div>
+      }
+    />
+  </TabsContent>
+  <TabsContent value="code">
+    ```json doc-gen:file
+    {
+      "file": "./node_modules/@native-blocks/library/src/examples/slider/slider-demo.tsx",
+      "codeblock": {
+        "lang": "tsx",
+        "meta": "title=\"/library/examples/slider/slider-demo.tsx\""
+      }
+    }
+    ```
+  </TabsContent>
+</Tabs>
 
 ## Installation
 

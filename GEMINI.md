@@ -1,6 +1,6 @@
 NativeBlocks is a mobile-first React Native component registry distributed through a shadcn/ui registry.
 
-The goal is to provide production-ready, copy-paste React Native components and app blocks that feel native to iOS and Android. Components should prioritize touch interactions, dynamic Tailwind styling classes without any statically defined values, smooth animations, minimalistic following standards, and modern mobile design patterns rather than web-inspired interfaces.
+The goal is to provide production-ready, copy-paste React Native components and blocks that feel native to iOS and Android. Components should prioritize touch interactions, dynamic Tailwind styling classes without any statically defined values, smooth animations, minimalistic following standards, and modern mobile design patterns rather than web-inspired interfaces.
 
 ## Using the template
 
@@ -58,7 +58,7 @@ The goal is to provide production-ready, copy-paste React Native components and 
 1. Create the source code in packages/library/src/blocks/block-name.tsx then export it in packages/library/src/blocks/index.ts. Any reactive mobile dependencies need to handle web Platform and be added to transpilePackages in apps/docs/next.config.mjs
 2. Create the example code in packages/library/src/examples/block-name/block-name-variant.tsx with as many examples as we require to demonstrate the different variants of this block (if exists) using the name BlockNameVariantPreview then export in packages/library/src/examples/block-name/index.ts.
 3. Add it to apps/showcase/registry.json and apps/docs/registry.json (both should be identical), with name "block-name", type "registry:block", title "Block Name", description (use a concise desc), author "@terrykn", files with path "./node_modules/@native-blocks/library/src/blocks/block-name.tsx" and type "registry:block", and registryDependencies with array of any React Native Reusables dependencies used in the block, with https://reactnativereusables.com/r/new-york/used-component-name.json
-4. Create apps/docs/content/docs/blocks/[use appropriate block category]/block-name.mdx following the structure from EXAMPLE_BLOCK_DOC.mdx
+4. Create apps/docs/content/docs/blocks/[use appropriate block category]/block-name.mdx following the structure from EXAMPLE_BLOCK_DOC.mdx. Ensure the preview is wrapped in `Tabs` with both "Preview" and "Code" tabs, where the "Code" tab displays the example source code.
 5. Add the object to BLOCKS array inside apps/docs/components/blocks-grid.tsx with title "Block Name" and href "/docs/blocks/[block category]/block-name"
 6. Add the example preview(s) to apps/showcase/app/components/block-name.tsx importing BlockNameVariantPreview from @/library/examples/block-name using the following structure:
 
@@ -82,7 +82,7 @@ export default function BlockNameScreen() {
 1. Create the source code for ComponentName in packages/library/src/components/ui/component-name.tsx then export it in packages/library/src/components/ui/index.ts. Any reactive mobile dependencies need to handle web Platform and be added to transpilePackages in apps/docs/next.config.mjs
 2. Create the example code in packages/library/src/examples/component-name/component-name-variant.tsx with as many examples as we require to demonstrate the different variants of this component (if exists) using the name ComponentNameVariantPreview then export in packages/library/src/examples/component-name/index.ts.
 3. Add it to apps/showcase/registry.json and apps/docs/registry.json (both should be identical), with name "component-name", type "registry:component", title "Component Name", description (use a concise desc), author "@terrykn", files with path "./node_modules/@native-components/library/src/components/ui/component-name.tsx" and type "registry:component", and registryDependencies with array of any React Native Reusables dependencies used in the component, with https://reactnativereusables.com/r/new-york/used-component-name.json
-4. Create apps/docs/content/docs/components/component-name.mdx following the structure from EXAMPLE_COMPONENT_DOC.mdx
+4. Create apps/docs/content/docs/components/component-name.mdx following the structure from EXAMPLE_COMPONENT_DOC.mdx. Ensure the preview is wrapped in `Tabs` with both "Preview" and "Code" tabs, where the "Code" tab displays the example source code.
 5. Add the example preview(s) to apps/showcase/app/components/component-name.tsx importing ComponentNameVariantPreview from @/library/examples/component-name using the following structure:
 
 ```

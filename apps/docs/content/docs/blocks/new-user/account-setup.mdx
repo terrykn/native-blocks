@@ -15,17 +15,36 @@ import { AccountSetupPreview } from '@docs/components/examples';
 
 <div className="h-5" />
 
-<div id="preview" className="scroll-m-20 *:hidden" aria-hidden>
-  ## Preview
-</div>
-
-<BlockPreviewCard
-  preview={
-    <div className="w-full max-w-sm h-[600px] border border-border rounded-3xl overflow-hidden shadow-2xl">
-      <AccountSetupPreview />
+<Tabs defaultValue="preview">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <div id="preview" className="scroll-m-20 *:hidden" aria-hidden>
+      ## Preview
     </div>
-  }
-/>
+
+    <BlockPreviewCard
+      preview={
+        <div className="w-full max-w-sm h-[600px] border border-border rounded-3xl overflow-hidden shadow-2xl">
+          <AccountSetupPreview />
+        </div>
+      }
+    />
+  </TabsContent>
+  <TabsContent value="code">
+    ```json doc-gen:file
+    {
+      "file": "./node_modules/@native-blocks/library/src/examples/account-setup/account-setup-demo.tsx",
+      "codeblock": {
+        "lang": "tsx",
+        "meta": "title=\"/library/examples/account-setup/account-setup-demo.tsx\""
+      }
+    }
+    ```
+  </TabsContent>
+</Tabs>
 
 ## Installation
 
