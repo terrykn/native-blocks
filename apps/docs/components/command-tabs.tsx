@@ -17,7 +17,7 @@ export function CommandTabs({ args }: { args: string[] }) {
         {MANAGERS.map((manager) => (
           <Tab key={manager} value={manager} className="dark:text-foreground *:dark">
             <CodeBlock>
-              <Pre>
+              <Pre className="text-white">
                 <code>
                   {[...COMMAND[manager], 'native-blocks', ...args].join(' ')}
                 </code>
