@@ -282,6 +282,8 @@ export function themeToCssVars(t: ThemeState, mode: Mode): Record<string, string
     vars['--radius'] = pxToRem(t.radius);
     vars['--border-width'] = `${t.borderWidth}px`;
 
+    const isDark = mode === "dark"
+
     if (isDark) {
         vars['--shadow-color-sm'] = `rgba(0, 0, 0, ${round(s * 2.5)})`;
         vars['--shadow-color-md'] = `rgba(0, 0, 0, ${round(s * 3.5)})`;
