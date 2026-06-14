@@ -276,6 +276,7 @@ export function deriveColors(primary: HSL, background: HSL): ColorMap {
 
 /** Everything `ThemePreview` injects as inline CSS variables, for the given mode. */
 export function themeToCssVars(t: ThemeState, mode: Mode): Record<string, string> {
+    const s = t.shadowOpacity;
     const palette = t.colors[mode];
     const vars: Record<string, string> = {};
     for (const k of COLOR_TOKENS) vars[`--${k}`] = formatHsl(palette[k]);
