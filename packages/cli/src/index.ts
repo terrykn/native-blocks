@@ -32,8 +32,8 @@ program
                 
                 if (!content.includes("--border-width:")) {
                     content = content.replace(
-                        /:root\s*{([^}]*)}/s,
-                        (match, p1) => `:root {${p1}    --border-width: 0.5px;\n    --shadow-sm: transparent;\n    --shadow-md: transparent;\n    --shadow-lg: transparent;\n    --shadow-xl: transparent;\n    --shadow-2xl: transparent;\n  }`
+                        /(:root|.dark:root)\s*{([^}]*)}/gs,
+                        (match, p1, p2) => `${p1} {${p2}    --border-width: 0.5px;\n    --shadow-sm: rgba(0, 0, 0, 0);\n    --shadow-md: rgba(0, 0, 0, 0);\n    --shadow-lg: rgba(0, 0, 0, 0);\n    --shadow-xl: rgba(0, 0, 0, 0);\n    --shadow-2xl: rgba(0, 0, 0, 0);\n  }`
                     );
                 }
                 fs.writeFileSync(cssPath, content);
@@ -71,7 +71,7 @@ program
             if (!content.includes("borderWidth:")) {
                 content = content.replace(
                     /radius:\s*['"]1.25rem['"]/g,
-                    "radius: '1.25rem',\n    borderWidth: 0.5"
+                    "radius: '1.25rem',\n    borderWidth: '0.5px'"
                 );
             }
             

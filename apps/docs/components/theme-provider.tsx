@@ -188,9 +188,9 @@ export const DEFAULT_DARK_COLORS: ColorMap = {
 };
 
 export const DEFAULT_THEME: ThemeState = {
-    radius: 10,
-    borderWidth: 1,
-    shadowOpacity: 0.1,
+    radius: 20,
+    borderWidth: 0.5,
+    shadowOpacity: 0,
     colors: {
         light: DEFAULT_LIGHT_COLORS,
         dark: DEFAULT_DARK_COLORS,

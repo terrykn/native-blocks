@@ -97,7 +97,7 @@ function Footer({ url }: { url: string }) {
       </div>
 <div className="flex h-20 items-center justify-between">
   <div className="text-fd-muted-foreground w-full text-balance px-4 text-center text-xs leading-loose lg:text-sm">
-    Created by{' '}
+    Built by{' '}
     <a
       href="https://terrykn.github.io"
       target="_blank"
@@ -105,7 +105,7 @@ function Footer({ url }: { url: string }) {
       className="underline underline-offset-4 font-medium hover:text-foreground transition-colors">
       Terry Nguyen
     </a>
-    . Documentation template by{' '}
+    . Docs template by{' '}
     <a
       href="https://github.com/gabimoncha"
       target="_blank"
@@ -113,7 +113,7 @@ function Footer({ url }: { url: string }) {
       className="underline underline-offset-4 hover:text-foreground transition-colors">
       gabimoncha
     </a>
-    , based on{' '}
+    . Extends{' '}
     <a
       href="https://reactnativereusables.com"
       target="_blank"
