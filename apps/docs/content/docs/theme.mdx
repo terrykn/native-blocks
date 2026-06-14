@@ -40,12 +40,13 @@ module.exports = {
         hairline: hairlineWidth(),
       },
       boxShadow: {
-        sm: '0 1px 3px var(--shadow-sm)',
-        DEFAULT: '0 2px 8px var(--shadow-md)',
-        md: '0 4px 12px var(--shadow-md)',
-        lg: '0 8px 20px var(--shadow-lg)',
-        xl: '0 12px 30px var(--shadow-xl)',
-        '2xl': '0 15px 50px var(--shadow-2xl)',
+        xs: 'var(--shadow-xs, 0 1px 2px var(--shadow-color-sm))',
+        sm: 'var(--shadow-sm, 0 1px 3px var(--shadow-color-sm))',
+        DEFAULT: 'var(--shadow, 0 2px 8px var(--shadow-color-md))',
+        md: 'var(--shadow-md, 0 4px 12px var(--shadow-color-md))',
+        lg: 'var(--shadow-lg, 0 8px 20px var(--shadow-color-lg))',
+        xl: 'var(--shadow-xl, 0 12px 30px var(--shadow-color-xl))',
+        '2xl': 'var(--shadow-2xl, 0 15px 50px var(--shadow-color-2xl))',
         none: 'none',
       },
     },
@@ -62,13 +63,32 @@ Paste the generated CSS into your `global.css` file. This defines the default va
   :root {
     --radius: 1.25rem;
     --border-width: 0.5px;
-    --shadow-sm: rgba(0, 0, 0, 0);
-    --shadow-md: rgba(0, 0, 0, 0);
-    --shadow-lg: rgba(0, 0, 0, 0);
-    --shadow-xl: rgba(0, 0, 0, 0);
-    --shadow-2xl: rgba(0, 0, 0, 0);
+    --shadow-color-sm: rgba(0, 0, 0, 0);
+    --shadow-color-md: rgba(0, 0, 0, 0);
+    --shadow-color-lg: rgba(0, 0, 0, 0);
+    --shadow-color-xl: rgba(0, 0, 0, 0);
+    --shadow-color-2xl: rgba(0, 0, 0, 0);
+    --shadow-xs: none;
+    --shadow-sm: none;
+    --shadow: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-xl: none;
+    --shadow-2xl: none;
   }
 }
+
+@layer utilities {
+  /* Enforce global shadow control while supporting color utilities */
+  .shadow-xs { box-shadow: var(--shadow-xs) !important; }
+  .shadow-sm { box-shadow: var(--shadow-sm) !important; }
+  .shadow { box-shadow: var(--shadow) !important; }
+  .shadow-md { box-shadow: var(--shadow-md) !important; }
+  .shadow-lg { box-shadow: var(--shadow-lg) !important; }
+  .shadow-xl { box-shadow: var(--shadow-xl) !important; }
+  .shadow-2xl { box-shadow: var(--shadow-2xl) !important; }
+}
+```
 ```
 
 ### Theme.ts

@@ -282,20 +282,36 @@ export function themeToCssVars(t: ThemeState, mode: Mode): Record<string, string
     vars['--radius'] = pxToRem(t.radius);
     vars['--border-width'] = `${t.borderWidth}px`;
 
-    const isDark = mode === 'dark';
-    const s = t.shadowOpacity;
     if (isDark) {
-        vars['--shadow-sm'] = `rgba(0, 0, 0, ${round(s * 2.5)})`;
-        vars['--shadow-md'] = `rgba(0, 0, 0, ${round(s * 3.5)})`;
-        vars['--shadow-lg'] = `rgba(0, 0, 0, ${round(s * 4.5)})`;
-        vars['--shadow-xl'] = `rgba(0, 0, 0, ${round(s * 5.5)})`;
-        vars['--shadow-2xl'] = `rgba(0, 0, 0, ${round(s * 6.5)})`;
+        vars['--shadow-color-sm'] = `rgba(0, 0, 0, ${round(s * 2.5)})`;
+        vars['--shadow-color-md'] = `rgba(0, 0, 0, ${round(s * 3.5)})`;
+        vars['--shadow-color-lg'] = `rgba(0, 0, 0, ${round(s * 4.5)})`;
+        vars['--shadow-color-xl'] = `rgba(0, 0, 0, ${round(s * 5.5)})`;
+        vars['--shadow-color-2xl'] = `rgba(0, 0, 0, ${round(s * 6.5)})`;
     } else {
-        vars['--shadow-sm'] = `rgba(0, 0, 0, ${round(s * 0.5)})`;
-        vars['--shadow-md'] = `rgba(0, 0, 0, ${round(s * 0.8)})`;
-        vars['--shadow-lg'] = `rgba(0, 0, 0, ${round(s * 1.2)})`;
-        vars['--shadow-xl'] = `rgba(0, 0, 0, ${round(s * 1.6)})`;
-        vars['--shadow-2xl'] = `rgba(0, 0, 0, ${round(s * 2.0)})`;
+        vars['--shadow-color-sm'] = `rgba(0, 0, 0, ${round(s * 0.5)})`;
+        vars['--shadow-color-md'] = `rgba(0, 0, 0, ${round(s * 0.8)})`;
+        vars['--shadow-color-lg'] = `rgba(0, 0, 0, ${round(s * 1.2)})`;
+        vars['--shadow-color-xl'] = `rgba(0, 0, 0, ${round(s * 1.6)})`;
+        vars['--shadow-color-2xl'] = `rgba(0, 0, 0, ${round(s * 2.0)})`;
+    }
+
+    if (s === 0) {
+        vars['--shadow-xs'] = 'none';
+        vars['--shadow-sm'] = 'none';
+        vars['--shadow'] = 'none';
+        vars['--shadow-md'] = 'none';
+        vars['--shadow-lg'] = 'none';
+        vars['--shadow-xl'] = 'none';
+        vars['--shadow-2xl'] = 'none';
+    } else {
+        vars['--shadow-xs'] = '0 1px 2px var(--tw-shadow-color, var(--shadow-color-sm))';
+        vars['--shadow-sm'] = '0 1px 3px var(--tw-shadow-color, var(--shadow-color-sm))';
+        vars['--shadow'] = '0 2px 8px var(--tw-shadow-color, var(--shadow-color-md))';
+        vars['--shadow-md'] = '0 4px 12px var(--tw-shadow-color, var(--shadow-color-md))';
+        vars['--shadow-lg'] = '0 8px 20px var(--tw-shadow-color, var(--shadow-color-lg))';
+        vars['--shadow-xl'] = '0 12px 30px var(--tw-shadow-color, var(--shadow-color-xl))';
+        vars['--shadow-2xl'] = '0 15px 50px var(--tw-shadow-color, var(--shadow-color-2xl))';
     }
 
     return vars;
@@ -311,27 +327,49 @@ export function generateGlobalCss(theme: ThemeState): string {
 
         const isDark = mode === 'dark';
         const s = theme.shadowOpacity;
-        const shadowLines = isDark
+        const shadowColorLines = isDark
             ? [
-                  `${indent}--shadow-sm: rgba(0, 0, 0, ${round(s * 2.5)});`,
-                  `${indent}--shadow-md: rgba(0, 0, 0, ${round(s * 3.5)});`,
-                  `${indent}--shadow-lg: rgba(0, 0, 0, ${round(s * 4.5)});`,
-                  `${indent}--shadow-xl: rgba(0, 0, 0, ${round(s * 5.5)});`,
-                  `${indent}--shadow-2xl: rgba(0, 0, 0, ${round(s * 6.5)});`,
+                  `${indent}--shadow-color-sm: rgba(0, 0, 0, ${round(s * 2.5)});`,
+                  `${indent}--shadow-color-md: rgba(0, 0, 0, ${round(s * 3.5)});`,
+                  `${indent}--shadow-color-lg: rgba(0, 0, 0, ${round(s * 4.5)});`,
+                  `${indent}--shadow-color-xl: rgba(0, 0, 0, ${round(s * 5.5)});`,
+                  `${indent}--shadow-color-2xl: rgba(0, 0, 0, ${round(s * 6.5)});`,
               ]
             : [
-                  `${indent}--shadow-sm: rgba(0, 0, 0, ${round(s * 0.5)});`,
-                  `${indent}--shadow-md: rgba(0, 0, 0, ${round(s * 0.8)});`,
-                  `${indent}--shadow-lg: rgba(0, 0, 0, ${round(s * 1.2)});`,
-                  `${indent}--shadow-xl: rgba(0, 0, 0, ${round(s * 1.6)});`,
-                  `${indent}--shadow-2xl: rgba(0, 0, 0, ${round(s * 2.0)});`,
+                  `${indent}--shadow-color-sm: rgba(0, 0, 0, ${round(s * 0.5)});`,
+                  `${indent}--shadow-color-md: rgba(0, 0, 0, ${round(s * 0.8)});`,
+                  `${indent}--shadow-color-lg: rgba(0, 0, 0, ${round(s * 1.2)});`,
+                  `${indent}--shadow-color-xl: rgba(0, 0, 0, ${round(s * 1.6)});`,
+                  `${indent}--shadow-color-2xl: rgba(0, 0, 0, ${round(s * 2.0)});`,
               ];
+
+        const shadowLines =
+            s === 0
+                ? [
+                      `${indent}--shadow-xs: none;`,
+                      `${indent}--shadow-sm: none;`,
+                      `${indent}--shadow: none;`,
+                      `${indent}--shadow-md: none;`,
+                      `${indent}--shadow-lg: none;`,
+                      `${indent}--shadow-xl: none;`,
+                      `${indent}--shadow-2xl: none;`,
+                  ]
+                : [
+                      `${indent}--shadow-xs: 0 1px 2px var(--tw-shadow-color, var(--shadow-color-sm));`,
+                      `${indent}--shadow-sm: 0 1px 3px var(--tw-shadow-color, var(--shadow-color-sm));`,
+                      `${indent}--shadow: 0 2px 8px var(--tw-shadow-color, var(--shadow-color-md));`,
+                      `${indent}--shadow-md: 0 4px 12px var(--tw-shadow-color, var(--shadow-color-md));`,
+                      `${indent}--shadow-lg: 0 8px 20px var(--tw-shadow-color, var(--shadow-color-lg));`,
+                      `${indent}--shadow-xl: 0 12px 30px var(--tw-shadow-color, var(--shadow-color-xl));`,
+                      `${indent}--shadow-2xl: 0 15px 50px var(--tw-shadow-color, var(--shadow-color-2xl));`,
+                  ];
 
         lines.splice(
             ringIdx + 1,
             0,
             `${indent}--radius: ${pxToRem(theme.radius)};`,
             `${indent}--border-width: ${theme.borderWidth}px;`,
+            ...shadowColorLines,
             ...shadowLines
         );
         return lines.join('\n');
@@ -349,6 +387,17 @@ ${block(theme.colors.light, 'light')}
   .dark:root {
 ${block(theme.colors.dark, 'dark')}
   }
+}
+
+@layer utilities {
+  /* Enforce global shadow control while supporting color utilities */
+  .shadow-xs { box-shadow: var(--shadow-xs) !important; }
+  .shadow-sm { box-shadow: var(--shadow-sm) !important; }
+  .shadow { box-shadow: var(--shadow) !important; }
+  .shadow-md { box-shadow: var(--shadow-md) !important; }
+  .shadow-lg { box-shadow: var(--shadow-lg) !important; }
+  .shadow-xl { box-shadow: var(--shadow-xl) !important; }
+  .shadow-2xl { box-shadow: var(--shadow-2xl) !important; }
 }
 `;
 }

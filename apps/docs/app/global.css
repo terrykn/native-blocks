@@ -25,11 +25,17 @@
     --ring: 0 0% 63%;
     --radius: 1.25rem;
     --border-width: 0.5px;
-    --shadow-sm: rgba(0, 0, 0, 0);
-    --shadow-md: rgba(0, 0, 0, 0);
-    --shadow-lg: rgba(0, 0, 0, 0);
-    --shadow-xl: rgba(0, 0, 0, 0);
-    --shadow-2xl: rgba(0, 0, 0, 0);
+    --shadow-color-sm: rgba(0, 0, 0, 0);
+    --shadow-color-md: rgba(0, 0, 0, 0);
+    --shadow-color-lg: rgba(0, 0, 0, 0);
+    --shadow-color-xl: rgba(0, 0, 0, 0);
+    --shadow-color-2xl: rgba(0, 0, 0, 0);
+    --shadow-sm: none;
+    --shadow: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-xl: none;
+    --shadow-2xl: none;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -59,15 +65,32 @@
     --ring: 300 0% 45%;
     --radius: 1.25rem;
     --border-width: 0.5px;
-    --shadow-sm: rgba(0, 0, 0, 0);
-    --shadow-md: rgba(0, 0, 0, 0);
-    --shadow-lg: rgba(0, 0, 0, 0);
-    --shadow-xl: rgba(0, 0, 0, 0);
-    --shadow-2xl: rgba(0, 0, 0, 0);
+    --shadow-color-sm: rgba(0, 0, 0, 0);
+    --shadow-color-md: rgba(0, 0, 0, 0);
+    --shadow-color-lg: rgba(0, 0, 0, 0);
+    --shadow-color-xl: rgba(0, 0, 0, 0);
+    --shadow-color-2xl: rgba(0, 0, 0, 0);
+    --shadow-sm: none;
+    --shadow: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-xl: none;
+    --shadow-2xl: none;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+}
+
+@layer utilities {
+  /* Enforce global shadow control while supporting color utilities */
+  .shadow-xs { box-shadow: var(--shadow-xs) !important; }
+  .shadow-sm { box-shadow: var(--shadow-sm) !important; }
+  .shadow { box-shadow: var(--shadow) !important; }
+  .shadow-md { box-shadow: var(--shadow-md) !important; }
+  .shadow-lg { box-shadow: var(--shadow-lg) !important; }
+  .shadow-xl { box-shadow: var(--shadow-xl) !important; }
+  .shadow-2xl { box-shadow: var(--shadow-2xl) !important; }
 }

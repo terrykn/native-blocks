@@ -33,8 +33,12 @@ program
                 if (!content.includes("--border-width:")) {
                     content = content.replace(
                         /(:root|.dark:root)\s*{([^}]*)}/gs,
-                        (match, p1, p2) => `${p1} {${p2}    --border-width: 0.5px;\n    --shadow-sm: rgba(0, 0, 0, 0);\n    --shadow-md: rgba(0, 0, 0, 0);\n    --shadow-lg: rgba(0, 0, 0, 0);\n    --shadow-xl: rgba(0, 0, 0, 0);\n    --shadow-2xl: rgba(0, 0, 0, 0);\n  }`
+                        (match, p1, p2) => `${p1} {${p2}    --border-width: 0.5px;\n    --shadow-color-sm: rgba(0, 0, 0, 0);\n    --shadow-color-md: rgba(0, 0, 0, 0);\n    --shadow-color-lg: rgba(0, 0, 0, 0);\n    --shadow-color-xl: rgba(0, 0, 0, 0);\n    --shadow-color-2xl: rgba(0, 0, 0, 0);\n    --shadow-xs: none;\n    --shadow-sm: none;\n    --shadow: none;\n    --shadow-md: none;\n    --shadow-lg: none;\n    --shadow-xl: none;\n    --shadow-2xl: none;\n  }`
                     );
+                    
+                    if (!content.includes("@layer utilities {")) {
+                        content += `\n@layer utilities {\n  /* Enforce global shadow control while supporting color utilities */\n  .shadow-xs { box-shadow: var(--shadow-xs) !important; }\n  .shadow-sm { box-shadow: var(--shadow-sm) !important; }\n  .shadow { box-shadow: var(--shadow) !important; }\n  .shadow-md { box-shadow: var(--shadow-md) !important; }\n  .shadow-lg { box-shadow: var(--shadow-lg) !important; }\n  .shadow-xl { box-shadow: var(--shadow-xl) !important; }\n  .shadow-2xl { box-shadow: var(--shadow-2xl) !important; }\n}\n`;
+                    }
                 }
                 fs.writeFileSync(cssPath, content);
                 console.log(`Updated ${path.basename(cssPath)}`);
@@ -55,7 +59,7 @@ program
             if (!content.includes("boxShadow:")) {
                 content = content.replace(
                     /extend:\s*{([^}]*)}/s,
-                    (match, p1) => `extend: {${p1}      boxShadow: {\n        sm: '0 1px 3px var(--shadow-sm)',\n        DEFAULT: '0 2px 8px var(--shadow-md)',\n        md: '0 4px 12px var(--shadow-md)',\n        lg: '0 8px 20px var(--shadow-lg)',\n        xl: '0 12px 30px var(--shadow-xl)',\n        '2xl': '0 15px 50px var(--shadow-2xl)',\n        none: 'none',\n      },\n`
+                    (match, p1) => `extend: {${p1}      boxShadow: {\n        xs: 'var(--shadow-xs, 0 1px 2px var(--shadow-color-sm))',\n        sm: 'var(--shadow-sm, 0 1px 3px var(--shadow-color-sm))',\n        DEFAULT: 'var(--shadow, 0 2px 8px var(--shadow-color-md))',\n        md: 'var(--shadow-md, 0 4px 12px var(--shadow-color-md))',\n        lg: 'var(--shadow-lg, 0 8px 20px var(--shadow-color-lg))',\n        xl: 'var(--shadow-xl, 0 12px 30px var(--shadow-color-xl))',\n        '2xl': 'var(--shadow-2xl, 0 15px 50px var(--shadow-color-2xl))',\n        none: 'none',\n      },\n`
                 );
             }
             
