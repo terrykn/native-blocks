@@ -94,6 +94,7 @@ import {
   Type,
   Underline,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -465,7 +466,7 @@ function ComponentPreview({ title }: { title: string }) {
   }
 }
 
-export function ReusablesGrid() {
+function ReusablesGridBase() {
   return (
     <div className="not-prose grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
       {COMPONENTS.map((component) => (
@@ -489,3 +490,7 @@ export function ReusablesGrid() {
     </div>
   );
 }
+
+export const ReusablesGrid = dynamic(() => Promise.resolve(ReusablesGridBase), {
+  ssr: false,
+});

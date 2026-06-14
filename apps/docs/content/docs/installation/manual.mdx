@@ -1,0 +1,402 @@
+---
+title: Manual Installation
+description: Manually setting up Native Blocks in your project
+---
+
+## Project Setup
+
+Select your initialization style below to add Native Blocks to your workspace ecosystem.
+
+<InstallationTabs />
+
+<Steps>
+  <Step>
+    ### Set up Nativewind 
+    Follow the official installation guide to add [Nativewind](https://www.nativewind.dev/docs/getting-started/installation) to your project.
+  </Step>
+  
+  <Step>
+    ### Update the default inlined `rem` value
+    Change the default `rem` value by setting `inlineRem` in your `metro.config.js` file.
+    
+    ```diff title="metro.config.js"
+    const { getDefaultConfig } = require('expo/metro-config');
+    const { withNativeWind } = require('nativewind/metro');
+    
+    const config = getDefaultConfig(__dirname);
+    
+    - module.exports = withNativeWind(config, { input: './global.css' });
+    + module.exports = withNativeWind(config, { input: './global.css', inlineRem: 16 });
+    ```
+  </Step>
+
+  <Step>
+    ### Add dependencies
+    Add the following utility core architectural dependencies directly to your project environment:
+
+    ```bash
+    npx expo install tailwindcss-animate class-variance-authority clsx tailwind-merge @rn-primitives/portal
+    ```
+  </Step>
+
+  <Step>
+    ### Add the Portal Host to your root layout
+    Render the `PortalHost` from [`@rn-primitives/portal`](https://rnprimitives.com/portal) inside your root container. Place it layout-wise as the absolute final child item of your active context providers. This target handles component rendering for overlays like `DropdownMenu`, `Tooltip`, and `Popover`.
+
+    ```diff title="app/_layout.tsx"
+     <ThemeProvider value={NAV_THEME[colorScheme]}>
+       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+       <Stack />
+    +  <PortalHost />
+     </ThemeProvider>
+    ```
+  </Step>
+
+  <Step>
+    ### Configure path aliases
+    Configure your specific project paths lookup using the standard context definitions inside your local `tsconfig.json` layout environment.
+
+    ```json title="tsconfig.json"
+    {
+      "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+          "@/*": ["./*"]
+        }
+      }
+    }
+    ```
+
+    The `@` symbol works beautifully as a clean structure root alias, but you can feel free to substitute your custom patterns.
+  </Step>
+
+  <Step>
+    ### Configure your styles
+    Set up the layout configuration environment using these 3 simple structural points:
+
+    1. Mount the explicit target CSS engine layer variables cleanly within your global context pipeline:
+    ```css title="global.css"
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    @layer base {
+      :root {
+        --background: 0 0% 100%;
+        --foreground: 0 0% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 3.9%;
+        --primary: 0 0% 9%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 0 0% 96.1%;
+        --secondary-foreground: 0 0% 9%;
+        --muted: 0 0% 96.1%;
+        --muted-foreground: 0 0% 45.1%;
+        --accent: 0 0% 96.1%;
+        --accent-foreground: 0 0% 9%;
+        --destructive: 0 84.2% 60.2%;
+        --border: 0 0% 89.8%;
+        --input: 0 0% 89.8%;
+        --ring: 0 0% 63%;
+        --radius: 0.625rem;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+      }
+
+      .dark:root {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 70.9% 59.4%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 300 0% 45%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+      }
+    }
+    ```
+
+    2. Map the active system layout values into your local `tailwind.config.js` script instance:
+    ```js title="tailwind.config.js"
+    const { hairlineWidth } = require('nativewind/theme');
+
+    /** @type {import('tailwindcss').Config} */
+    module.exports = {
+      darkMode: 'class',
+      content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
+      presets: [require('nativewind/preset')],
+      theme: {
+        extend: {
+          colors: {
+            border: 'hsl(var(--border))',
+            input: 'hsl(var(--input))',
+            ring: 'hsl(var(--ring))',
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            primary: {
+              DEFAULT: 'hsl(var(--primary))',
+              foreground: 'hsl(var(--primary-foreground))',
+            },
+            secondary: {
+              DEFAULT: 'hsl(var(--secondary))',
+              foreground: 'hsl(var(--secondary-foreground))',
+            },
+            destructive: {
+              DEFAULT: 'hsl(var(--destructive))',
+              foreground: 'hsl(var(--destructive-foreground))',
+            },
+            muted: {
+              DEFAULT: 'hsl(var(--muted))',
+              foreground: 'hsl(var(--muted-foreground))',
+            },
+            accent: {
+              DEFAULT: 'hsl(var(--accent))',
+              foreground: 'hsl(var(--accent-foreground))',
+            },
+            popover: {
+              DEFAULT: 'hsl(var(--popover))',
+              foreground: 'hsl(var(--popover-foreground))',
+            },
+            card: {
+              DEFAULT: 'hsl(var(--card))',
+              foreground: 'hsl(var(--card-foreground))',
+            },
+          },
+          borderRadius: {
+            lg: 'var(--radius)',
+            md: 'calc(var(--radius) - 2px)',
+            sm: 'calc(var(--radius) - 4px)',
+          },
+          borderWidth: {
+            hairline: hairlineWidth(),
+          },
+          keyframes: {
+            'accordion-down': {
+              from: { height: '0' },
+              to: { height: 'var(--radix-accordion-content-height)' },
+            },
+            'accordion-up': {
+              from: { height: 'var(--radix-accordion-content-height)' },
+              to: { height: '0' },
+            },
+          },
+          animation: {
+            'accordion-down': 'accordion-down 0.2s ease-out',
+            'accordion-up': 'accordion-up 0.2s ease-out',
+          },
+        },
+      },
+      future: {
+        hoverOnlyWhenSupported: true,
+      },
+      plugins: [require('tailwindcss-animate')],
+    };
+    ```
+
+    3. Inject structural setup variables natively directly through your app base configurations:
+    ```ts title="lib/theme.ts"
+    import { DarkTheme, DefaultTheme, type Theme } from '@react-navigation/native';
+
+    export const THEME = {
+      light: {
+        background: 'hsl(0 0% 100%)',
+        foreground: 'hsl(0 0% 3.9%)',
+        card: 'hsl(0 0% 100%)',
+        cardForeground: 'hsl(0 0% 3.9%)',
+        popover: 'hsl(0 0% 100%)',
+        popoverForeground: 'hsl(0 0% 3.9%)',
+        primary: 'hsl(0 0% 9%)',
+        primaryForeground: 'hsl(0 0% 98%)',
+        secondary: 'hsl(0 0% 96.1%)',
+        secondaryForeground: 'hsl(0 0% 9%)',
+        muted: 'hsl(0 0% 96.1%)',
+        mutedForeground: 'hsl(0 0% 45.1%)',
+        accent: 'hsl(0 0% 96.1%)',
+        accentForeground: 'hsl(0 0% 9%)',
+        destructive: 'hsl(0 84.2% 60.2%)',
+        border: 'hsl(0 0% 89.8%)',
+        input: 'hsl(0 0% 89.8%)',
+        ring: 'hsl(0 0% 63%)',
+        radius: '0.625rem',
+        chart1: 'hsl(12 76% 61%)',
+        chart2: 'hsl(173 58% 39%)',
+        chart3: 'hsl(197 37% 24%)',
+        chart4: 'hsl(43 74% 66%)',
+        chart5: 'hsl(27 87% 67%)',
+      },
+      dark: {
+        background: 'hsl(0 0% 3.9%)',
+        foreground: 'hsl(0 0% 98%)',
+        card: 'hsl(0 0% 3.9%)',
+        cardForeground: 'hsl(0 0% 98%)',
+        popover: 'hsl(0 0% 3.9%)',
+        popoverForeground: 'hsl(0 0% 98%)',
+        primary: 'hsl(0 0% 98%)',
+        primaryForeground: 'hsl(0 0% 9%)',
+        secondary: 'hsl(0 0% 14.9%)',
+        secondaryForeground: 'hsl(0 0% 98%)',
+        muted: 'hsl(0 0% 14.9%)',
+        mutedForeground: 'hsl(0 0% 63.9%)',
+        accent: 'hsl(0 0% 14.9%)',
+        accentForeground: 'hsl(0 0% 98%)',
+        destructive: 'hsl(0 70.9% 59.4%)',
+        border: 'hsl(0 0% 14.9%)',
+        input: 'hsl(0 0% 14.9%)',
+        ring: 'hsl(300 0% 45%)',
+        radius: '0.625rem',
+        chart1: 'hsl(220 70% 50%)',
+        chart2: 'hsl(160 60% 45%)',
+        chart3: 'hsl(30 80% 55%)',
+        chart4: 'hsl(280 65% 60%)',
+        chart5: 'hsl(340 75% 55%)',
+      },
+    };
+
+    export const NAV_THEME: Record<'light' | 'dark', Theme> = {
+      light: {
+        ...DefaultTheme,
+        colors: {
+          background: THEME.light.background,
+          border: THEME.light.border,
+          card: THEME.light.card,
+          notification: THEME.light.destructive,
+          primary: THEME.light.primary,
+          text: THEME.light.foreground,
+        },
+      },
+      dark: {
+        ...DarkTheme,
+        colors: {
+          background: THEME.dark.background,
+          border: THEME.dark.border,
+          card: THEME.dark.card,
+          notification: THEME.dark.destructive,
+          primary: THEME.dark.primary,
+          text: THEME.dark.foreground,
+        },
+      },
+    };
+    ```
+
+    <div className='text-fd-muted-foreground mt-4 text-sm'>
+      For deep style configuration blueprints, consult our dedicated [Customization](/docs/customization) manual.
+    </div>
+  </Step>
+
+  <Step>
+    ### Add a cn helper
+    Create a clean utility function to safely merge Tailwind CSS class attributes across your platform interfaces.
+
+    ```tsx title="lib/utils.ts"
+    import { clsx, type ClassValue } from "clsx";
+    import { twMerge } from "tailwind-merge";
+
+    export function cn(...inputs: ClassValue[]) {
+      return twMerge(clsx(inputs));
+    }
+    ```
+  </Step>
+
+  <Step>
+    ### Create a `components.json` file
+    Establish the workspace blueprint rules map layout by populating this configuration block directly within your directory root context.
+
+    ```json title="components.json"
+    {
+      "$schema": "[https://ui.shadcn.com/schema.json](https://ui.shadcn.com/schema.json)",
+      "style": "new-york",
+      "rsc": false,
+      "tsx": true,
+      "tailwind": {
+        "config": "tailwind.config.js",
+        "css": "global.css",
+        "baseColor": "neutral",
+        "cssVariables": true
+      },
+      "aliases": {
+        "components": "@/components",
+        "utils": "@/lib/utils",
+        "ui": "@/components/ui",
+        "lib": "@/lib",
+        "hooks": "@/hooks"
+      }
+    }
+    ```
+  </Step>
+
+  <Step>
+    ### All set.
+    You're ready to start building features using blocks. Run our diagnostic `doctor` system validation sequence command to check that structural elements align correctly.
+
+    <CommandTabs args={["doctor"]} />
+
+    <div className='text-fd-muted-foreground mt-4 text-sm'>
+      For analytical parameter usage tracking, visit the [doctor options](/docs/cli#doctor) blueprint map.
+    </div>
+  </Step>
+</Steps>
+
+---
+
+## Workspace Integration
+
+### Add blocks
+
+Once initialization is complete, components can be pulled straight into your active repository.
+
+<Tabs defaultValue="npm">
+  <TabsList>
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="bun">bun</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+    <TabsTrigger value="yarn">yarn</TabsTrigger>
+    <TabsTrigger value="yarn@berry">yarn @berry</TabsTrigger>
+  </TabsList>
+  <TabsContent value="npm">
+    <BashCommand command={`npx native-blocks add account-setup`} />
+  </TabsContent>
+  <TabsContent value="bun">
+    <BashCommand command={`bunx native-blocks add account-setup`} />
+  </TabsContent>
+  <TabsContent value="pnpm">
+    <BashCommand command={`pnpm dlx native-blocks add account-setup`} />
+  </TabsContent>
+  <TabsContent value="yarn">
+    <BashCommand command={`npx native-blocks add account-setup`} />
+  </TabsContent>
+  <TabsContent value="yarn@berry">
+    <BashCommand command={`yarn dlx native-blocks add account-setup`} />
+  </TabsContent>
+</Tabs>
+
+The wrapper initialization adds the targeted structural component stack directly to your repository ecosystem for straightforward deployment:
+
+```tsx title="app/index.tsx"
+import { AccountSetup } from '@/blocks/account-setup';
+
+export default function Screen() {
+  return (
+    <AccountSetup />
+  );
+}
+```

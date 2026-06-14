@@ -16,7 +16,7 @@ program
     .command("init")
     .description("Initialize Native Blocks in your project")
     .action(() => {
-        console.log("🚀 Initializing Native Blocks...");
+        console.log("Initializing Native Blocks...");
         spawnSync("npx", ["@react-native-reusables/cli@latest", "init"], {
             stdio: "inherit",
             shell: true,
@@ -24,14 +24,12 @@ program
 
         const cwd = process.cwd();
 
-        // 1. Update global.css
         const globalCssPaths = [path.join(cwd, "global.css"), path.join(cwd, "app", "global.css")];
         for (const cssPath of globalCssPaths) {
             if (fs.existsSync(cssPath)) {
                 let content = fs.readFileSync(cssPath, "utf8");
                 content = content.replace(/--radius:\s*[^;]+;/g, "--radius: 1.25rem;");
                 
-                // Add border-width and shadow variables if they don't exist
                 if (!content.includes("--border-width:")) {
                     content = content.replace(
                         /:root\s*{([^}]*)}/s,
@@ -43,12 +41,10 @@ program
             }
         }
 
-        // 2. Update tailwind.config.js
         const tailwindPath = path.join(cwd, "tailwind.config.js");
         if (fs.existsSync(tailwindPath)) {
             let content = fs.readFileSync(tailwindPath, "utf8");
-            
-            // Add borderWidth DEFAULT
+
             if (!content.includes("DEFAULT: 'var(--border-width)'")) {
                 content = content.replace(
                     /borderWidth:\s*{([^}]*)}/s,
@@ -56,7 +52,6 @@ program
                 );
             }
 
-            // Update boxShadow
             if (!content.includes("boxShadow:")) {
                 content = content.replace(
                     /extend:\s*{([^}]*)}/s,
@@ -68,7 +63,6 @@ program
             console.log("Updated tailwind.config.js");
         }
 
-        // 3. Update lib/theme.ts
         const themePath = path.join(cwd, "lib", "theme.ts");
         if (fs.existsSync(themePath)) {
             let content = fs.readFileSync(themePath, "utf8");
@@ -124,13 +118,13 @@ program
         ];
 
         if (REUSABLES.includes(component)) {
-            console.log(`📦 Adding ${component} from React Native Reusables...`);
+            console.log(`Adding ${component} from React Native Reusables...`);
             spawnSync("npx", ["@react-native-reusables/cli@latest", "add", component], {
                 stdio: "inherit",
                 shell: true,
             });
         } else {
-            console.log(`🚀 Fetching ${component} from Native Blocks registry...`);
+            console.log(`Adding ${component} from Native Blocks...`);
             const url = `https://native-blocks.vercel.app/r/${component}.json`;
             spawnSync("npx", ["shadcn@latest", "add", url], {
                 stdio: "inherit",

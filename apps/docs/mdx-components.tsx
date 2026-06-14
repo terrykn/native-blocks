@@ -7,6 +7,7 @@ import { BlockPreviewCard, PreviewCard } from '@docs/components/preview-card';
 import { ThemeCustomizer } from '@docs/components/theme-customizer';
 import { ThemePreview } from '@docs/components/theme-preview';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@docs/components/ui/tabs';
+import { InstallationTabs } from '@docs/components/installation-tabs'; // [ADD THIS IMPORT]
 import { cn } from '@docs/lib/utils';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
@@ -18,8 +19,6 @@ const mdxComponents: MDXComponents = {
   h2: ({ className, ...props }) => (
     <defaultComponents.h2 className={cn(className, 'font-medium')} {...props} />
   ),
-  //  HTML `ref` attribute conflicts with `forwardRef`
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   pre: ({ ref: _ref, className, ...props }) => (
     <CodeBlock
       {...props}
@@ -48,6 +47,7 @@ const mdxComponents: MDXComponents = {
   PreviewCard,
   ThemeCustomizer,
   ThemePreview,
+  InstallationTabs,
 };
 
 const lineNumberClassNames = cn(

@@ -1,0 +1,38 @@
+---
+title: Installation
+description: Getting Started with Native Blocks
+---
+
+## Project Setup
+
+Select your initialization style below to add Native Blocks to your workspace ecosystem.
+
+<InstallationTabs />
+
+Run the `init` command to start a new project dynamically, or install inside your pre-existing workspace.
+
+<CommandTabs args={["init"]}/>
+
+This command will initialize Native Blocks in your project and automatically write the necessary layout configurations.
+
+---
+
+## Workspace Integration
+
+### Add blocks
+
+Once initialization is complete, components can be pulled straight into your active repository.
+
+<CommandTabs args={["add", "account-setup"]}/>
+
+The wrapper initialization adds the targeted structural component stack directly to your repository ecosystem for straightforward deployment:
+
+```tsx title="app/index.tsx"
+import { AccountSetup } from '@/blocks/account-setup';
+
+export default function Screen() {
+  return (
+    <AccountSetup />
+  );
+}
+```
