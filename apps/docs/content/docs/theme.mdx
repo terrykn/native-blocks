@@ -11,6 +11,11 @@ description: Customize the design tokens used by every block and component in th
 
 The theme customizer generates design tokens as CSS variables. To make these work in your project, you need to configure Tailwind to use these variables for roundedness, borders, and shadows.
 
+Native Blocks defaults are:
+- **Border Width:** 0.5px
+- **Border Radius:** 20px (1.25rem)
+- **Shadows:** 0 (none)
+
 ### Tailwind Configuration
 
 Update your `tailwind.config.js` to extend the theme with these variables:
@@ -52,6 +57,35 @@ module.exports = {
 
 Paste the generated CSS into your `global.css` file. This defines the default values for the variables used by Tailwind.
 
+```css title="global.css"
+@layer base {
+  :root {
+    --radius: 1.25rem;
+    --border-width: 0.5px;
+    --shadow-sm: transparent;
+    --shadow-md: transparent;
+    --shadow-lg: transparent;
+    --shadow-xl: transparent;
+    --shadow-2xl: transparent;
+  }
+}
+```
+
 ### Theme.ts
 
 If you use the `THEME` object for React Navigation or manual styling, ensure your `lib/theme.ts` matches the generated output to include properties like `radius` and `borderWidth`.
+
+```ts title="lib/theme.ts"
+export const THEME = {
+  light: {
+    // ...
+    radius: '1.25rem',
+    borderWidth: 0.5,
+  },
+  dark: {
+    // ...
+    radius: '1.25rem',
+    borderWidth: 0.5,
+  },
+};
+```
