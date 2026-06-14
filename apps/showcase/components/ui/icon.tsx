@@ -1,6 +1,7 @@
 import { cn } from '@showcase/lib/utils';
 import type { LucideIcon, LucideProps } from 'lucide-react-native';
 import { cssInterop } from 'nativewind';
+import { Platform } from 'react-native';
 
 type IconProps = LucideProps & {
   as: LucideIcon;
@@ -12,7 +13,7 @@ function IconImpl({ as: IconComponent, ...props }: IconProps) {
 
 cssInterop(IconImpl, {
   className: {
-    target: 'style',
+    target: Platform.OS === 'web' ? 'className' : 'style',
     nativeStyleToProp: {
       height: 'size',
       width: 'size',

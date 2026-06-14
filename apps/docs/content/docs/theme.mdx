@@ -62,11 +62,11 @@ Paste the generated CSS into your `global.css` file. This defines the default va
   :root {
     --radius: 1.25rem;
     --border-width: 0.5px;
-    --shadow-sm: transparent;
-    --shadow-md: transparent;
-    --shadow-lg: transparent;
-    --shadow-xl: transparent;
-    --shadow-2xl: transparent;
+    --shadow-sm: rgba(0, 0, 0, 0);
+    --shadow-md: rgba(0, 0, 0, 0);
+    --shadow-lg: rgba(0, 0, 0, 0);
+    --shadow-xl: rgba(0, 0, 0, 0);
+    --shadow-2xl: rgba(0, 0, 0, 0);
   }
 }
 ```
@@ -80,12 +80,12 @@ export const THEME = {
   light: {
     // ...
     radius: '1.25rem',
-    borderWidth: 0.5,
+    borderWidth: '0.5px',
   },
   dark: {
     // ...
     radius: '1.25rem',
-    borderWidth: 0.5,
+    borderWidth: '0.5px',
   },
 };
 ```

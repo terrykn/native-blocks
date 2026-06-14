@@ -77,7 +77,7 @@ export type ThemeState = {
     colors: Record<Mode, ColorMap>;
 };
 
-const STORAGE_KEY = 'docs-theme-customizer-v2';
+const STORAGE_KEY = 'docs-theme-customizer-v3';
 
 /* ---------------------------------- helpers --------------------------------- */
 
