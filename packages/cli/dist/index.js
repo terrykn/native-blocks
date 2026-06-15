@@ -61,7 +61,7 @@ program
             if (!content.includes("--border-width:")) {
                 content = content.replace(/(:root|.dark:root)\s*{([^}]*)}/gs, (match, p1, p2) => `${p1} {${p2}    --border-width: 0.5px;\n    --shadow-color-sm: rgba(0, 0, 0, 0);\n    --shadow-color-md: rgba(0, 0, 0, 0);\n    --shadow-color-lg: rgba(0, 0, 0, 0);\n    --shadow-color-xl: rgba(0, 0, 0, 0);\n    --shadow-color-2xl: rgba(0, 0, 0, 0);\n    --shadow-xs: none;\n    --shadow-sm: none;\n    --shadow: none;\n    --shadow-md: none;\n    --shadow-lg: none;\n    --shadow-xl: none;\n    --shadow-2xl: none;\n  }`);
                 if (!content.includes("@layer utilities {")) {
-                    content += `\n@layer utilities {\n  /* Enforce global shadow control while supporting color utilities */\n  .shadow-xs { box-shadow: var(--shadow-xs) !important; }\n  .shadow-sm { box-shadow: var(--shadow-sm) !important; }\n  .shadow { box-shadow: var(--shadow) !important; }\n  .shadow-md { box-shadow: var(--shadow-md) !important; }\n  .shadow-lg { box-shadow: var(--shadow-lg) !important; }\n  .shadow-xl { box-shadow: var(--shadow-xl) !important; }\n  .shadow-2xl { box-shadow: var(--shadow-2xl) !important; }\n}\n`;
+                    content += `\n@layer utilities {\n  .shadow-xs { box-shadow: var(--shadow-xs) !important; }\n  .shadow-sm { box-shadow: var(--shadow-sm) !important; }\n  .shadow { box-shadow: var(--shadow) !important; }\n  .shadow-md { box-shadow: var(--shadow-md) !important; }\n  .shadow-lg { box-shadow: var(--shadow-lg) !important; }\n  .shadow-xl { box-shadow: var(--shadow-xl) !important; }\n  .shadow-2xl { box-shadow: var(--shadow-2xl) !important; }\n}\n`;
                 }
             }
             fs.writeFileSync(cssPath, content);

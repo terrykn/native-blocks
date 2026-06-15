@@ -393,7 +393,6 @@ ${block(theme.colors.dark, 'dark')}
 }
 
 @layer utilities {
-  /* Enforce global shadow control while supporting color utilities */
   .shadow-xs { box-shadow: var(--shadow-xs) !important; }
   .shadow-sm { box-shadow: var(--shadow-sm) !important; }
   .shadow { box-shadow: var(--shadow) !important; }

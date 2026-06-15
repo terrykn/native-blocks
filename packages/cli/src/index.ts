@@ -10,7 +10,7 @@ const program = new Command();
 program
     .name("native-blocks")
     .description("Mobile-first React Native component and block registry")
-    .version("0.1.0");
+    .version("0.2.0");
 
 program
     .command("init")
@@ -37,7 +37,7 @@ program
                     );
                     
                     if (!content.includes("@layer utilities {")) {
-                        content += `\n@layer utilities {\n  /* Enforce global shadow control while supporting color utilities */\n  .shadow-xs { box-shadow: var(--shadow-xs) !important; }\n  .shadow-sm { box-shadow: var(--shadow-sm) !important; }\n  .shadow { box-shadow: var(--shadow) !important; }\n  .shadow-md { box-shadow: var(--shadow-md) !important; }\n  .shadow-lg { box-shadow: var(--shadow-lg) !important; }\n  .shadow-xl { box-shadow: var(--shadow-xl) !important; }\n  .shadow-2xl { box-shadow: var(--shadow-2xl) !important; }\n}\n`;
+                        content += `\n@layer utilities {\n .shadow-xs { box-shadow: var(--shadow-xs) !important; }\n  .shadow-sm { box-shadow: var(--shadow-sm) !important; }\n  .shadow { box-shadow: var(--shadow) !important; }\n  .shadow-md { box-shadow: var(--shadow-md) !important; }\n  .shadow-lg { box-shadow: var(--shadow-lg) !important; }\n  .shadow-xl { box-shadow: var(--shadow-xl) !important; }\n  .shadow-2xl { box-shadow: var(--shadow-2xl) !important; }\n}\n`;
                     }
                 }
                 fs.writeFileSync(cssPath, content);

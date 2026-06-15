@@ -22,8 +22,8 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 63%;
-    --radius: 0.625rem;
-    --border-width: 1px;
+    --radius: 1.25rem;
+    --border-width: 0.5px;
     --shadow-sm: rgba(0, 0, 0, 0.05);
     --shadow-md: rgba(0, 0, 0, 0.08);
     --shadow-lg: rgba(0, 0, 0, 0.12);
@@ -55,8 +55,8 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 300 0% 45%;
-    --radius: 0.625rem;
-    --border-width: 1px;
+    --radius: 1.25rem;
+    --border-width: 0.5px;
     --shadow-sm: rgba(0, 0, 0, 0.25);
     --shadow-md: rgba(0, 0, 0, 0.35);
     --shadow-lg: rgba(0, 0, 0, 0.45);
@@ -68,4 +68,14 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+}
+
+@layer utilities {
+  .shadow-xs { box-shadow: var(--shadow-xs) !important; }
+  .shadow-sm { box-shadow: var(--shadow-sm) !important; }
+  .shadow { box-shadow: var(--shadow) !important; }
+  .shadow-md { box-shadow: var(--shadow-md) !important; }
+  .shadow-lg { box-shadow: var(--shadow-lg) !important; }
+  .shadow-xl { box-shadow: var(--shadow-xl) !important; }
+  .shadow-2xl { box-shadow: var(--shadow-2xl) !important; }
 }
